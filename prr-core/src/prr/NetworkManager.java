@@ -15,6 +15,8 @@ import prr.exceptions.UnrecognizedEntryException;
  */
 public class NetworkManager {
 
+	private String _filename;
+
 	/** The network itself. */
 	private Network _network = new Network();
         //FIXME  addmore fields if needed
@@ -65,8 +67,8 @@ public class NetworkManager {
 	 */
 	public void importFile(String filename) throws ImportFileException {
 		try {
-                        _network.importFile(filename);
-                } catch (IOException | UnrecognizedEntryException /* FIXME maybe other exceptions */ e) {
+            	_network.importFile(filename);
+        } catch (IOException | UnrecognizedEntryException /* FIXME maybe other exceptions */ e) {
                         throw new ImportFileException(filename, e);
     }
 	}

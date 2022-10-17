@@ -12,6 +12,42 @@ abstract public class Terminal implements Serializable /* FIXME maybe addd more 
 	/** Serial number for serialization. */
 	private static final long serialVersionUID = 202208091753L;
 
+        /** Terminal State */
+        //private TerminalState _state
+
+        /** Terminal id */
+        private String _id;
+        
+        /** payments made by Terminal*/
+        private Double _payments;
+
+        /** Terminal debt */
+        private Double _debt;
+
+        /** Terminal owner */
+        private Client _owner;
+        
+        //private Map<Integrer, Notification> _notifications = new TreeMap<>();
+
+        /**
+         * @param id
+         * @param owner
+         */
+        public Terminal(String id, Client owner) {
+                _id = id;
+                _owner = owner;
+                _payments = 0.0;
+                _debt = 0.0;
+        }
+
+        public Terminal(String id, Client owner, String state) {
+                // TODO - STATE
+                _id = id;
+                _owner = owner;
+                _payments = 0.0;
+                _debt = 0.0;
+        }
+
         // FIXME define attributes
         // FIXME define contructor(s)
         // FIXME define methods
