@@ -26,6 +26,9 @@ abstract public class Terminal implements Serializable /* FIXME maybe addd more 
 
         /** Terminal owner */
         private Client _owner;
+
+        /** Terminal friends */
+        private Map<String, Client> _friends;
         
         //private Map<Integrer, Notification> _notifications = new TreeMap<>();
 
@@ -69,5 +72,13 @@ abstract public class Terminal implements Serializable /* FIXME maybe addd more 
          **/
         public boolean canStartCommunication() {
                 // FIXME add implementation code
+        }
+
+        public String getID() {
+                return _id;
+        }
+
+        public void addFriend(Client friend) {
+                _friends.put(friend.getID(), friend);
         }
 }

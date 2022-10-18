@@ -33,8 +33,7 @@ abstract public class Client implements Serializable {
     private int _videoStreak;
 
     /** Terminals owned by client */
-    // maybe change Integrer to String
-    private Map<Integrer, Terminal> _terminals = new TreeMap<>();
+    private Map<String, Terminal> _terminals = new TreeMap<>();
     
     /** Client tariff */
     // private Tariff _tariff;
@@ -57,6 +56,14 @@ abstract public class Client implements Serializable {
         _videoStreak = 0;
         _payments = 0.0;
         _debts = 0.0;
+    }
+
+    public String getID() {
+        return _id;
+    }
+
+    public void addTerminal(Terminal terminal) {
+        _terminals.put(terminal.getID(), terminal);
     }
 
 }

@@ -15,8 +15,27 @@ public class FancyTerminal extends BasicTerminal {
     }
 
     @Override
-    public boolean isAdvanced(){
+    public boolean isFancy(){
         return true;
     }
 
+    @Override
+    public String toString() {
+
+        if (_friends.length > 0) {
+            String toReturn = "FANCY|" + _id + "|" + _owner.getID() + "|" + "state" + "|" + _payments + "|" + _debt + "|"
+
+            for (int i = 0; i < _friends.length; i++) {
+                toReturn += _friends[i].getID();
+                if (i + 1 != _friends.length) {
+                    toReturn += ",";
+                }
+
+                return toReturn;
+            }
+        }
+        else {
+            return "FANCY|" + _id + "|" + _owner.getID() + "|" + "state" + "|" + _payments + "|" + _debt;
+        }
+    }
 }

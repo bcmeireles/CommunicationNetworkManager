@@ -132,7 +132,27 @@ public class Network implements Serializable {
 		return terminal;
 	}
 
-	//TODO FRIENDS
+	private void importFriends(String[] split) throws UnrecognizedEntryException {
+		if (split.length != 3) {
+			throw new UnrecognizedEntryException(split);
+		}
+
+		if (!_terminals.containsKey(split[1])) {
+			throw new UnrecognizedEntryException(split);
+		}
+
+		friender = _terminals.get(split[1]);
+
+		String[] toAdd = split[2].split("\\,");
+
+		for (int i = 0; i < toAdd.length; i++) {
+			if (!_terminals.containsKey(toAdd[i])) {
+				throw new UnrecognizedEntryException(split);
+			}
+
+			friender.addFriend(_terminals.get(toAdd[i]));
+		}
+	}
 }
 
 
