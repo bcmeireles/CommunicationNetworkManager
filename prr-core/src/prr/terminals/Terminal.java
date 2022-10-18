@@ -7,13 +7,13 @@ import java.io.Serializable;
 /**
  * Abstract terminal.
  */
-abstract public class Terminal implements Serializable /* FIXME maybe addd more interfaces */{
+public abstract class Terminal implements Serializable /* FIXME maybe addd more interfaces */{
 
 	/** Serial number for serialization. */
 	private static final long serialVersionUID = 202208091753L;
 
         /** Terminal State */
-        //private TerminalState _state
+        private TerminalState _state = new IdleState(this);
 
         /** Terminal id */
         private String _id;
@@ -31,6 +31,15 @@ abstract public class Terminal implements Serializable /* FIXME maybe addd more 
         private Map<String, Client> _friends;
         
         //private Map<Integrer, Notification> _notifications = new TreeMap<>();
+
+
+        public void idle() { _state.idle(); }
+        public void silence() { _state.silence(); }
+        public void busy() { _state.busy(); }
+        public void off() { _state.off(); }
+
+        public void setState(TerminalState state) { _state = state; }
+
 
         /**
          * @param id

@@ -14,6 +14,9 @@ class DoRegisterClient extends Command<Network> {
 	DoRegisterClient(Network receiver) {
 		super(Label.REGISTER_CLIENT, receiver);
                 //FIXME add command fields
+				addStringField("id", Prompt.key());
+				addStringField("name", Prompt.name());
+				addStringField("taxID", Prompt.taxID());
 	}
 
 	@Override
