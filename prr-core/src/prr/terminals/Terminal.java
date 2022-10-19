@@ -81,7 +81,7 @@ public abstract class Terminal implements Serializable /* FIXME maybe addd more 
          **/
         public boolean canEndCurrentCommunication() {
                 // FIXME add implementation code 
-                return true;
+                return false;
         }
 
         /**
