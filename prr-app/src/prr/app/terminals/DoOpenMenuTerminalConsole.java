@@ -4,6 +4,11 @@ import prr.Network;
 import prr.app.exceptions.UnknownTerminalKeyException;
 import pt.tecnico.uilib.menus.Command;
 import pt.tecnico.uilib.menus.CommandException;
+
+import prr.app.exceptions.*;
+import prr.exceptions.*;
+
+
 //FIXME add mode import if needed
 
 /**
@@ -21,6 +26,11 @@ class DoOpenMenuTerminalConsole extends Command<Network> {
                 //FIXME implement command
                 // create an instance of prr.app.terminal.Menu with the
                 // selected Terminal
-				new prr.app.terminal.Menu(_receiver,_receiver.getTerminal(stringField("terminalID"))).open();
+				try {
+					new prr.app.terminal.Menu(_receiver,_receiver.getTerminal(stringField("terminalID"))).open();
+				} catch (prr.exceptions.UnknownTerminalKeyException e) {
+					throw new prr.app.exceptions.UnknownTerminalKeyException(stringField("terminalID"));
+				}
+				
 	}
 }

@@ -106,7 +106,7 @@ public class Client implements Serializable {
             toReturn += "0|0|0";
         }
         else {
-            toReturn += terminalCount() + "|" + _payments + "|" + _debts;
+            toReturn += terminalCount() + "|" + Math.round(_payments) + "|" + Math.round(_debts);
         }
 
         return toReturn;

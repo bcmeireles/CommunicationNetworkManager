@@ -30,7 +30,7 @@ public class FancyTerminal extends BasicTerminal {
         Map<String, Terminal> friends = getFriends();
 
         if (friends.size() > 0) {
-            String toReturn = "FANCY|" + getID() + "|" + getOwner().getID() + "|" + "state" + "|" + getPayments() + "|" + getDebt() + "|";
+            String toReturn = "FANCY|" + getID() + "|" + getOwner().getID() + "|" + "state" + "|" + Math.round(getPayments()) + "|" + Math.round(getDebt()) + "|";
 
             for (int i = 0; i < friends.size(); i++) {
                 toReturn += friends.get(i).getID();
@@ -42,7 +42,7 @@ public class FancyTerminal extends BasicTerminal {
             return toReturn;
         }
         else {
-            return "FANCY|" + getID() + "|" + getOwner().getID() + "|" + getState().toString() + "|" + getPayments() + "|" + getDebt();
+            return "FANCY|" + getID() + "|" + getOwner().getID() + "|" + getState().toString() + "|" + Math.round(getPayments()) + "|" + Math.round(getDebt());
         }
     }
 }

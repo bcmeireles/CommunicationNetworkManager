@@ -1,7 +1,9 @@
 package prr.app.clients;
 
 import prr.Network;
-import prr.app.exceptions.UnknownClientKeyException;
+
+import prr.app.exceptions.*;
+import prr.exceptions.*;
 import pt.tecnico.uilib.menus.Command;
 import pt.tecnico.uilib.menus.CommandException;
 //FIXME add more imports if needed
@@ -19,6 +21,11 @@ class DoShowClient extends Command<Network> {
 
 	@Override
 	protected final void execute() throws CommandException {
-				_display.popup(_receiver.getClient(stringField("id")));
+		try  {
+			_display.popup(_receiver.showClient(stringField("id")));
+		} catch (prr.exceptions.UnknownClientKeyException e) {
+			throw new prr.app.exceptions.UnknownClientKeyException(stringField("id"));
+		}
+				
 	}
 }

@@ -1,6 +1,8 @@
 package prr.clients;
 
-public abstract class ClientLevel {
+import java.io.Serializable;
+
+public abstract class ClientLevel implements Serializable {
     protected Client _client;
 
     public ClientLevel(Client client) { _client = client; }

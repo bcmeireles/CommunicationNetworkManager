@@ -24,7 +24,7 @@ public class BasicTerminal extends Terminal {
         Map<String, Terminal> friends = getFriends();
 
         if (friends.size() > 0) {
-            String toReturn = "BASIC|" + getID() + "|" + getOwner().getID() + "|" + "state" + "|" + getPayments() + "|" + getDebt() + "|";
+            String toReturn = "BASIC|" + getID() + "|" + getOwner().getID() + "|" + "state" + "|" + Math.round(getPayments()) + "|" + Math.round(getDebt()) + "|";
 
             for (int i = 0; i < friends.size(); i++) {
                 toReturn += friends.get(i).getID();
@@ -35,7 +35,7 @@ public class BasicTerminal extends Terminal {
             return toReturn;
         }
         else {
-            return "BASIC|" + getID() + "|" + getOwner().getID() + "|" + getState().toString() + "|" + getPayments() + "|" + getDebt();
+            return "BASIC|" + getID() + "|" + getOwner().getID() + "|" + getState().toString() + "|" + Math.round(getPayments()) + "|" + Math.round(getDebt());
         }
     }
 }

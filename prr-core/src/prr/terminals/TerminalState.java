@@ -1,6 +1,8 @@
 package prr.terminals;
 
-public abstract class TerminalState {
+import java.io.Serializable;
+
+public abstract class TerminalState implements Serializable {
     /** Terminal */
     protected Terminal _terminal;
 

@@ -11,10 +11,7 @@ import prr.terminals.Terminal;
 import prr.terminals.BasicTerminal;
 import prr.terminals.FancyTerminal;
 
-import prr.exceptions.DuplicateClientKeyException;
-import prr.exceptions.DuplicateTerminalKeyException;
-import prr.exceptions.UnknownClientKeyException;
-import prr.exceptions.UnknownTerminalKeyException;
+import prr.exceptions.*;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -37,6 +34,9 @@ public class Network implements Serializable {
 
 	/** Terminals */
 	private final Map<String, Terminal> _terminals = new TreeMap<>();
+
+	/** Network object has been changed. */
+	private boolean _changed = false;
 
 	
 
@@ -69,16 +69,17 @@ public class Network implements Serializable {
 		}
     }
 
-	public Client registerClient(String id, String name, int taxID) { //throws DuplicateClientKeyException 
-		//if (_clients.containsKey(id)) {
-		//	throw new DuplicateClientKeyException(id);
-		//}
+	public Client registerClient(String id, String name, int taxID) throws DuplicateClientKeyException {
+		if (_clients.containsKey(id)) {
+			throw new DuplicateClientKeyException(id);
+		}
 		Client client = new Client(id, name, taxID);
 		_clients.put(id, client);
+		setChanged(true);
 		return client;
 	}
 
-	public void registerTerminal(String type, String id, String clientID, String State) {//throws DuplicateTerminalKeyException, UnknownClientKeyException, UnrecognizedEntryException {
+	public void registerTerminal(String type, String id, String clientID, String state) {//throws DuplicateTerminalKeyException, UnknownClientKeyException, UnrecognizedEntryException {
 		//if (_terminals.containsKey(id)) {
 		//	throw new DuplicateTerminalKeyException(id);
 		//}
@@ -87,9 +88,13 @@ public class Network implements Serializable {
 		//}
 		Terminal terminal;
 
+		if (state == "ON") {
+			state = "IDLE";
+		}
+
 		switch (type) {
-			case "BASIC" -> terminal = registerBasicTerminal(id, clientID, State);
-			case "FANCY" -> terminal = registerFancyTerminal(id, clientID, State);
+			case "BASIC" -> terminal = registerBasicTerminal(id, clientID, state);
+			case "FANCY" -> terminal = registerFancyTerminal(id, clientID, state);
 			//default -> throw new UnrecognizedEntryException(type);
 		}
 	}
@@ -111,6 +116,7 @@ public class Network implements Serializable {
 		BasicTerminal terminal = new BasicTerminal(id, client, state);
 		_terminals.put(id, terminal);
 		client.addTerminal(terminal);
+		setChanged(true);
 		return terminal;
 	}
 
@@ -131,6 +137,7 @@ public class Network implements Serializable {
 		FancyTerminal terminal = new FancyTerminal(id, client, state);
 		_terminals.put(id, terminal);
 		client.addTerminal(terminal);
+		setChanged(true);
 		return terminal;
 	}
 
@@ -154,10 +161,17 @@ public class Network implements Serializable {
 
 			friender.addFriend(_terminals.get(toAdd[i]));
 		}
+
+		setChanged(true);
 	}
 
-	public String getClient(String id) {
+	public String showClient(String id) throws UnknownClientKeyException {
+		if (!_clients.containsKey(id)) {
+			throw new UnknownClientKeyException(id);
+		}
+		
 		Client client = _clients.get(id);
+
 		return client.toString();
 	}
 
@@ -171,10 +185,10 @@ public class Network implements Serializable {
 		return sb.toString();
 	}
 
-	public Terminal getTerminal(String id) { //throws UnknownTerminalKeyException {
-		//if (!_terminals.containsKey(id)) {
-		//	throw new UnknownTerminalKeyException(id);
-		//}
+	public Terminal getTerminal(String id) throws UnknownTerminalKeyException {
+		if (!_terminals.containsKey(id)) {
+			throw new UnknownTerminalKeyException(id);
+		}
 
 		return _terminals.get(id);
 	}
@@ -201,6 +215,14 @@ public class Network implements Serializable {
 		sb.deleteCharAt(sb.length() - 1);
 		return sb.toString();
 
+	}
+
+	public void setChanged(boolean changed) {
+		_changed = changed;
+	}
+
+	public boolean hasChanged() {
+		return _changed;
 	}
 
 }
