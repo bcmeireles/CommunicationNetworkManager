@@ -79,38 +79,40 @@ public class Network implements Serializable {
 		return client;
 	}
 
-	public void registerTerminal(String type, String id, String clientID, String state) {//throws DuplicateTerminalKeyException, UnknownClientKeyException, UnrecognizedEntryException {
-		//if (_terminals.containsKey(id)) {
-		//	throw new DuplicateTerminalKeyException(id);
-		//}
-		//if (!_clients.containsKey(clientID)) {
-		//	throw new UnknownClientKeyException(clientID);
-		//}
+	public void registerTerminal(String type, String id, String clientID, String state) throws DuplicateTerminalKeyException, UnknownClientKeyException, UnrecognizedEntryException {
+		if (_terminals.containsKey(id)) {
+			throw new DuplicateTerminalKeyException(id);
+		}
+		if (!_clients.containsKey(clientID)) {
+			throw new UnknownClientKeyException(clientID);
+		}
 		Terminal terminal;
 
-		if (state == "ON") {
-			state = "IDLE";
+		switch (state) {
+			case "SILENCE" -> state = "SILENT";
+			case "ON" -> state = "IDLE";
 		}
 
 		switch (type) {
 			case "BASIC" -> terminal = registerBasicTerminal(id, clientID, state);
 			case "FANCY" -> terminal = registerFancyTerminal(id, clientID, state);
-			//default -> throw new UnrecognizedEntryException(type);
+			default -> throw new UnrecognizedEntryException(type);
 		}
+
 	}
 	
-	public BasicTerminal registerBasicTerminal(String id, String clientID, String state) { //throws DuplicateTerminalKeyException, UnknownClientKeyException, UnrecognizedEntryException {
-		//if (id.length() != 6) {
-		//	throw new UnrecognizedEntryException(id);
-		//}
-		//
-		//if (_terminals.containsKey(id)) {
-		//	throw new DuplicateTerminalKeyException(id);
-		//}
-//
-		//if(!_clients.containsKey(clientID)) {
-		//	throw new UnknownClientKeyException(clientID);
-		//}
+	public BasicTerminal registerBasicTerminal(String id, String clientID, String state) throws DuplicateTerminalKeyException, UnknownClientKeyException, UnrecognizedEntryException {
+		if (id.length() != 6) {
+			throw new UnrecognizedEntryException(id);
+		}
+		
+		if (_terminals.containsKey(id)) {
+			throw new DuplicateTerminalKeyException(id);
+		}
+
+		if(!_clients.containsKey(clientID)) {
+			throw new UnknownClientKeyException(clientID);
+		}
 
 		Client client = _clients.get(clientID);
 		BasicTerminal terminal = new BasicTerminal(id, client, state);
@@ -120,18 +122,18 @@ public class Network implements Serializable {
 		return terminal;
 	}
 
-	public FancyTerminal registerFancyTerminal(String id, String clientID, String state) {//throws DuplicateTerminalKeyException, UnknownClientKeyException, UnrecognizedEntryException {
-		//if (id.length() != 6) {
-		//	throw new UnrecognizedEntryException(id);
-		//}
-		//
-		//if (_terminals.containsKey(id)) {
-		//	throw new DuplicateTerminalKeyException(id);
-		//}
-//
-		//if(!_clients.containsKey(clientID)) {
-		//	throw new UnknownClientKeyException(clientID);
-		//}
+	public FancyTerminal registerFancyTerminal(String id, String clientID, String state) throws DuplicateTerminalKeyException, UnknownClientKeyException, UnrecognizedEntryException {
+		if (id.length() != 6) {
+			throw new UnrecognizedEntryException(id);
+		}
+		
+		if (_terminals.containsKey(id)) {
+			throw new DuplicateTerminalKeyException(id);
+		}
+
+		if(!_clients.containsKey(clientID)) {
+			throw new UnknownClientKeyException(clientID);
+		}
 
 		Client client = _clients.get(clientID);
 		FancyTerminal terminal = new FancyTerminal(id, client, state);
@@ -178,8 +180,7 @@ public class Network implements Serializable {
 	public String getAllClients() {
 		StringBuilder sb = new StringBuilder();
 		for (Client client : _clients.values()) {
-			sb.append(client.toString());
-			sb.append("\n");
+			sb.append(client.toString() + "\n");
 		}
 		sb.deleteCharAt(sb.length() - 1);
 		return sb.toString();
@@ -196,8 +197,7 @@ public class Network implements Serializable {
 	public String getAllTerminals() {
 		StringBuilder sb = new StringBuilder();
 		for (Terminal terminal : _terminals.values()) {
-			sb.append(terminal.toString());
-			sb.append("\n");
+			sb.append(terminal.toString() + "\n");
 		}
 		sb.deleteCharAt(sb.length() - 1);
 		return sb.toString();
@@ -208,8 +208,7 @@ public class Network implements Serializable {
 		StringBuilder sb = new StringBuilder();
 		for (Terminal terminal : _terminals.values()) {
 			if (terminal.isUnused()) {
-				sb.append(terminal.toString());
-				sb.append("\n");
+				sb.append(terminal.toString() + "\n");
 			}
 		}
 		sb.deleteCharAt(sb.length() - 1);

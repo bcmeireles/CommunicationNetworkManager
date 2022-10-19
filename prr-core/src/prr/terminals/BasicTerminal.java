@@ -23,16 +23,17 @@ public class BasicTerminal extends Terminal {
 
         Map<String, Terminal> friends = getFriends();
 
-        if (friends.size() > 0) {
-            String toReturn = "BASIC|" + getID() + "|" + getOwner().getID() + "|" + "state" + "|" + Math.round(getPayments()) + "|" + Math.round(getDebt()) + "|";
+        StringBuilder sb = new StringBuilder();
 
-            for (int i = 0; i < friends.size(); i++) {
-                toReturn += friends.get(i).getID();
-                if (i + 1 != friends.size()) {
-                    toReturn += ",";
-                }
+        if (friends.size() > 0) {
+            sb.append("BASIC|" + getID() + "|" + getOwner().getID() + "|" + "state" + "|" + Math.round(getPayments()) + "|" + Math.round(getDebt()) + "|");
+
+            for (Terminal friend : friends.values()) {
+                sb.append(friend.getID() + ",");
             }
-            return toReturn;
+
+            sb.deleteCharAt(sb.length() - 1);
+		    return sb.toString();
         }
         else {
             return "BASIC|" + getID() + "|" + getOwner().getID() + "|" + getState().toString() + "|" + Math.round(getPayments()) + "|" + Math.round(getDebt());

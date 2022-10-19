@@ -29,17 +29,17 @@ public class FancyTerminal extends BasicTerminal {
 
         Map<String, Terminal> friends = getFriends();
 
+        StringBuilder sb = new StringBuilder();
+
         if (friends.size() > 0) {
-            String toReturn = "FANCY|" + getID() + "|" + getOwner().getID() + "|" + "state" + "|" + Math.round(getPayments()) + "|" + Math.round(getDebt()) + "|";
+            sb.append("FANCY|" + getID() + "|" + getOwner().getID() + "|" + "state" + "|" + Math.round(getPayments()) + "|" + Math.round(getDebt()) + "|");
 
-            for (int i = 0; i < friends.size(); i++) {
-                toReturn += friends.get(i).getID();
-                if (i + 1 != friends.size()) {
-                    toReturn += ",";
-                }
-
+            for (Terminal friend : friends.values()) {
+                sb.append(friend.getID() + ",");
             }
-            return toReturn;
+
+            sb.deleteCharAt(sb.length() - 1);
+		    return sb.toString();
         }
         else {
             return "FANCY|" + getID() + "|" + getOwner().getID() + "|" + getState().toString() + "|" + Math.round(getPayments()) + "|" + Math.round(getDebt());
