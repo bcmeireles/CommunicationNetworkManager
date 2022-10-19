@@ -32,4 +32,9 @@ public class OffState extends TerminalState {
 
     }
 
+    @Override
+    public String toString() {
+        return "OFF";
+    }
+
 }

@@ -17,7 +17,7 @@ class DoOpenMenuTerminalConsole extends Command<Network> {
 	}
 
 	@Override
-	protected final void execute() throws CommandException {
+	protected final void execute() throws CommandException, UnknownTerminalKeyException {
                 //FIXME implement command
                 // create an instance of prr.app.terminal.Menu with the
                 // selected Terminal

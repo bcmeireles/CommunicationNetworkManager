@@ -26,4 +26,9 @@ public class PlatinumClient extends ClientLevel {
         // Client is already platinum
 
     }
+
+    @Override
+    public String toString() {
+        return "PLATINUM";
+    }
 }

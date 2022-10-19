@@ -32,4 +32,9 @@ public class BusyState extends TerminalState {
 
     }
 
+    @Override
+    public String toString() {
+        return "BUSY";
+    }
+
 }

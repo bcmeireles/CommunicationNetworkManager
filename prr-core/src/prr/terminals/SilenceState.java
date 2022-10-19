@@ -32,4 +32,9 @@ public class SilenceState extends TerminalState {
 
     }
 
+    @Override
+    public String toString() {
+        return "SILENCE";
+    }
+
 }

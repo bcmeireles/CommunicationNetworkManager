@@ -1,9 +1,11 @@
 package prr.app.clients;
 
 import prr.Network;
-import prr.app.exceptions.DuplicateClientKeyException;
+
 import pt.tecnico.uilib.menus.Command;
 import pt.tecnico.uilib.menus.CommandException;
+
+import prr.app.exceptions.UnknownClientKeyException;
 //FIXME add more imports if needed
 
 /**
@@ -16,22 +18,20 @@ class DoRegisterClient extends Command<Network> {
                 //FIXME add command fields
 				addStringField("id", Prompt.key());
 				addStringField("name", Prompt.name());
-				addStringField("taxID", Prompt.taxID());
+				addIntegerField("taxID", Prompt.taxId());
 	}
 
 	@Override
 	protected final void execute() throws CommandException {
-			try {
+			//try {
 				_receiver.registerClient(
 					stringField("id"),
 					stringField("name"),
-					stringField("taxID"),
-				)
-			} catch (UnknownClientKeyException e) {
-				throw new UnknownClientKeyException(stringField("id"));
-			} catch (DuplicateClientKeyException e) {
-				throw new DuplicateClientKeyException(stringField("id"));
-			}
+					integerField("taxID")
+				); 
+			//} catch (DuplicateClientKeyException e) {
+			//	throw new DuplicateClientKeyException(stringField("id"));
+			//}
 	}
 
 }

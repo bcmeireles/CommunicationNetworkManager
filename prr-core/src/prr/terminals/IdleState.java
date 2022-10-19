@@ -33,4 +33,9 @@ public class IdleState extends TerminalState {
 
     }
 
+    @Override
+    public String toString() {
+        return "IDLE";
+    }
+
 }

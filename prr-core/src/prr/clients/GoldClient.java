@@ -26,4 +26,9 @@ public class GoldClient extends ClientLevel {
         _client.setLevel(new PlatinumClient(_client));
 
     }
+
+    @Override
+    public String toString() {
+        return "GOLD";
+    }
 }

@@ -20,19 +20,16 @@ public class Client implements Serializable {
     private String _name;
 
     /** Client balance */
-    private Double _balance;
+    private Double _balance = 0.0;
 
     /** Payments made by client */
-    private Double _payments;
+    private Double _payments = 0.0;
 
     /** Debts client has */
-    private Double _debts;
+    private Double _debts = 0.0;
 
-    /** Consequent text messages */
-    private int _textStreak;
-
-    /** Consequent video calls */
-    private int _videoStreak;
+    /** Has notifications enabled */
+    private boolean _notificationEnabled = true;
 
     /** Terminals owned by client */
     private Map<String, Terminal> _terminals = new TreeMap<>();
@@ -44,7 +41,7 @@ public class Client implements Serializable {
     // private Tariff _tariff;
 
     /** Client notifications */
-    //private Map<Integrer, Notification> _notifications = new TreeMap<>();
+    //private Map<Integer, Notification> _notifications = new TreeMap<>();
 
     /**
      * @param id
@@ -56,11 +53,6 @@ public class Client implements Serializable {
         _id = id;
         _taxID = taxID;
         _name = name;
-        _balance = 0.0;
-        _textStreak = 0;
-        _videoStreak = 0;
-        _payments = 0.0;
-        _debts = 0.0;
     }
 
     /** Getters */
@@ -92,5 +84,31 @@ public class Client implements Serializable {
 
     public void setLevel(ClientLevel level) {
         _level = level;
+    }
+
+    public boolean notificatonsEnabled() {
+        return _notificationEnabled;
+    }
+
+    public Integer terminalCount() {
+        return _terminals.size();
+    } 
+
+    @Override
+    public String toString() {
+        String toReturn = "CLIENT|" + _id + "|" + _name + "|" + _taxID + "|" + _level.toString() + "|";
+        if (notificatonsEnabled()) {
+            toReturn += "YES|";
+        } else {
+            toReturn += "NO|";
+        }
+        if (terminalCount() == 0) {
+            toReturn += "0|0|0";
+        }
+        else {
+            toReturn += terminalCount() + "|" + _payments + "|" + _debts;
+        }
+
+        return toReturn;
     }
 }

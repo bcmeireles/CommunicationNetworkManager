@@ -2,6 +2,9 @@ package prr.terminals;
 
 import prr.clients.Client;
 
+import java.util.Map;
+import java.util.TreeMap;
+
 public class FancyTerminal extends BasicTerminal {
 
     public FancyTerminal(String id, Client owner){
@@ -24,20 +27,22 @@ public class FancyTerminal extends BasicTerminal {
     @Override
     public String toString() {
 
-        if (_friends.length > 0) {
-            String toReturn = "FANCY|" + _id + "|" + _owner.getID() + "|" + "state" + "|" + _payments + "|" + _debt + "|";
+        Map<String, Terminal> friends = getFriends();
 
-            for (int i = 0; i < _friends.length; i++) {
-                toReturn += _friends[i].getID();
-                if (i + 1 != _friends.length) {
+        if (friends.size() > 0) {
+            String toReturn = "FANCY|" + getID() + "|" + getOwner().getID() + "|" + "state" + "|" + getPayments() + "|" + getDebt() + "|";
+
+            for (int i = 0; i < friends.size(); i++) {
+                toReturn += friends.get(i).getID();
+                if (i + 1 != friends.size()) {
                     toReturn += ",";
                 }
 
-                return toReturn;
             }
+            return toReturn;
         }
         else {
-            return "FANCY|" + _id + "|" + _owner.getID() + "|" + "state" + "|" + _payments + "|" + _debt;
+            return "FANCY|" + getID() + "|" + getOwner().getID() + "|" + getState().toString() + "|" + getPayments() + "|" + getDebt();
         }
     }
 }

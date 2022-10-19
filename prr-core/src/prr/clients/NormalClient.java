@@ -24,4 +24,9 @@ public class NormalClient extends ClientLevel {
         // Not possible
 
     }
+
+    @Override
+    public String toString() {
+        return "NORMAL";
+    }
 }

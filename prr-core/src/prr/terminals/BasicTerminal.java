@@ -24,19 +24,18 @@ public class BasicTerminal extends Terminal {
         Map<String, Terminal> friends = getFriends();
 
         if (friends.size() > 0) {
-            String toReturn = "BASIC|" + _id + "|" + _owner.getID() + "|" + "state" + "|" + _payments + "|" + _debt + "|";
+            String toReturn = "BASIC|" + getID() + "|" + getOwner().getID() + "|" + "state" + "|" + getPayments() + "|" + getDebt() + "|";
 
             for (int i = 0; i < friends.size(); i++) {
                 toReturn += friends.get(i).getID();
                 if (i + 1 != friends.size()) {
                     toReturn += ",";
                 }
-
-                return toReturn;
             }
+            return toReturn;
         }
         else {
-            return "BASIC|" + _id + "|" + _owner.getID() + "|" + "state" + "|" + _payments + "|" + _debt;
+            return "BASIC|" + getID() + "|" + getOwner().getID() + "|" + getState().toString() + "|" + getPayments() + "|" + getDebt();
         }
     }
 }

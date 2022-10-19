@@ -23,18 +23,21 @@ public abstract class Terminal implements Serializable /* FIXME maybe addd more 
         private String _id;
         
         /** payments made by Terminal*/
-        private Double _payments;
+        private Double _payments = 0.0;
 
         /** Terminal debt */
-        private Double _debt;
+        private Double _debt = 0.0;
 
         /** Terminal owner */
         private Client _owner;
 
         /** Terminal friends */
         private Map<String, Terminal> _friends = new TreeMap<>();
+
+        /**  */
+        private boolean _isUnused = true;
         
-        //private Map<Integrer, Notification> _notifications = new TreeMap<>();
+        //private Map<Integer, Notification> _notifications = new TreeMap<>();
 
 
         public void idle() { _state.idle(); }
@@ -52,8 +55,6 @@ public abstract class Terminal implements Serializable /* FIXME maybe addd more 
         public Terminal(String id, Client owner) {
                 _id = id;
                 _owner = owner;
-                _payments = 0.0;
-                _debt = 0.0;
         }
 
         public Terminal(String id, Client owner, String state) {
@@ -66,8 +67,6 @@ public abstract class Terminal implements Serializable /* FIXME maybe addd more 
 
                 _id = id;
                 _owner = owner;
-                _payments = 0.0;
-                _debt = 0.0;
         }
 
         // FIXME define attributes
@@ -119,5 +118,17 @@ public abstract class Terminal implements Serializable /* FIXME maybe addd more 
 
         public void addFriend(Terminal friend) {
                 _friends.put(friend.getID(), friend);
+        }
+
+        public void markUsed() {
+                _isUnused = false;
+        }
+
+        public boolean isUnused() {
+                return _isUnused;
+        }
+
+        public TerminalState getState() {
+                return _state;
         }
 }

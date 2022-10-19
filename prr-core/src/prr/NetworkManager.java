@@ -7,6 +7,9 @@ import prr.exceptions.ImportFileException;
 import prr.exceptions.MissingFileAssociationException;
 import prr.exceptions.UnavailableFileException;
 import prr.exceptions.UnrecognizedEntryException;
+import prr.exceptions.DuplicateClientKeyException;
+import prr.exceptions.DuplicateTerminalKeyException;
+import prr.exceptions.UnknownClientKeyException;
 
 //FIXME add more import if needed (cannot import from pt.tecnico or prr.app)
 
@@ -15,7 +18,7 @@ import prr.exceptions.UnrecognizedEntryException;
  */
 public class NetworkManager {
 
-	private String _filename;
+	private String _filename = "";
 
 	/** The network itself. */
 	private Network _network = new Network();
@@ -33,6 +36,7 @@ public class NetworkManager {
 	 */
 	public void load(String filename) throws UnavailableFileException {
 		//FIXME implement serialization method
+		
 	}
 
 	/**
@@ -68,7 +72,7 @@ public class NetworkManager {
 	public void importFile(String filename) throws ImportFileException {
 		try {
             	_network.importFile(filename);
-        } catch (IOException | UnrecognizedEntryException /* FIXME maybe other exceptions */ e) {
+        } catch (IOException | UnrecognizedEntryException | DuplicateClientKeyException | DuplicateTerminalKeyException | UnknownClientKeyException /* FIXME maybe other exceptions */ e) {
                         throw new ImportFileException(filename, e);
     }
 	}
