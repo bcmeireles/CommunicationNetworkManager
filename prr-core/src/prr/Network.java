@@ -69,17 +69,16 @@ public class Network implements Serializable {
 		}
     }
 
-	public Client registerClient(String id, String name, int taxID) throws DuplicateClientKeyException {
+	public void registerClient(String id, String name, int taxID) throws DuplicateClientKeyException {
 		if (_clients.containsKey(id)) {
 			throw new DuplicateClientKeyException(id);
 		}
 		Client client = new Client(id, name, taxID);
 		_clients.put(id, client);
 		setChanged(true);
-		return client;
 	}
 
-	public void registerTerminal(String type, String id, String clientID, String state) throws DuplicateTerminalKeyException, UnknownClientKeyException, UnrecognizedEntryException {
+	public void registerTerminal(String id, String type, String clientID, String state) throws DuplicateTerminalKeyException, UnknownClientKeyException, UnrecognizedEntryException {
 		if (_terminals.containsKey(id)) {
 			throw new DuplicateTerminalKeyException(id);
 		}
@@ -178,6 +177,9 @@ public class Network implements Serializable {
 	}
 
 	public String getAllClients() {
+		if (_clients.isEmpty()) {
+			return "";
+		}
 		StringBuilder sb = new StringBuilder();
 		for (Client client : _clients.values()) {
 			sb.append(client.toString() + "\n");
@@ -195,6 +197,9 @@ public class Network implements Serializable {
 	}
 
 	public String getAllTerminals() {
+		if (_terminals.isEmpty()) {
+			return "";
+		}
 		StringBuilder sb = new StringBuilder();
 		for (Terminal terminal : _terminals.values()) {
 			sb.append(terminal.toString() + "\n");

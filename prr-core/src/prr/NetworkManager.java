@@ -43,12 +43,14 @@ public class NetworkManager {
 	 * @throws UnavailableFileException if the specified file does not exist or there is
          *         an error while processing this file.
 	 */
-	//UnavailableFileException, 
-	public void load(String filename) throws FileNotFoundException, UnavailableFileException, IOException, ClassNotFoundException {
-		_filename = filename;
+	public void load(String filename) throws UnavailableFileException {
+		
 		try (ObjectInputStream ois = new ObjectInputStream(new BufferedInputStream(new FileInputStream(filename)))) {
+			_filename = filename;
 			_network = (Network) ois.readObject();
 			_network.setChanged(false);
+		} catch (IOException | ClassNotFoundException e) {
+			throw new UnavailableFileException(filename);
 		}
 	}
 

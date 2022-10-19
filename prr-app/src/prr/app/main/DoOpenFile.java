@@ -28,11 +28,11 @@ class DoOpenFile extends Command<NetworkManager> {
                 try {
                         _receiver.load(stringField("filename"));
                 } catch (UnavailableFileException e) {
-                        _display.popup(Message.fileNotFound());
-                } catch (IOException e) {
-                        e.printStackTrace();
-                } catch (ClassNotFoundException e) {
-                        e.printStackTrace();
-                }
+                        throw new FileOpenFailedException(e);
+                } //catch (IOException e) {
+                //        e.printStackTrace();
+                //} catch (ClassNotFoundException e) {
+                //        e.printStackTrace();
+                //}
 	}
 }
