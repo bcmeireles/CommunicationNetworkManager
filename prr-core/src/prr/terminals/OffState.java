@@ -1,3 +1,8 @@
+package prr.terminals;
+
+import prr.terminals.Terminal;
+import prr.terminals.TerminalState;
+
 public class OffState extends TerminalState {
     public OffState(Terminal terminal) {
         super(terminal);

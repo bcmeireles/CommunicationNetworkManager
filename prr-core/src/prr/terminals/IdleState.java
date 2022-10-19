@@ -1,3 +1,9 @@
+package prr.terminals;
+
+import prr.terminals.Terminal;
+import prr.terminals.TerminalState;
+
+
 public class IdleState extends TerminalState {
     public IdleState(Terminal terminal) {
         super(terminal);

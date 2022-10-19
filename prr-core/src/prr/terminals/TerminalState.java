@@ -5,7 +5,7 @@ public abstract class TerminalState {
     protected Terminal _terminal;
 
     /** @param terminal is the terminal */
-    public TerminalState(Terminal _terminal) { _terminal = terminal; }
+    public TerminalState(Terminal terminal) { _terminal = terminal; }
 
     /** Behaviour for idling */
     public abstract void idle();

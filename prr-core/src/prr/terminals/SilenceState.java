@@ -1,3 +1,8 @@
+package prr.terminals;
+
+import prr.terminals.Terminal;
+import prr.terminals.TerminalState;
+
 public class SilenceState extends TerminalState {
     public SilenceState(Terminal terminal) {
         super(terminal);

@@ -21,7 +21,17 @@ class DoRegisterClient extends Command<Network> {
 
 	@Override
 	protected final void execute() throws CommandException {
-                //FIXME implement command
+			try {
+				_receiver.registerClient(
+					stringField("id"),
+					stringField("name"),
+					stringField("taxID"),
+				)
+			} catch (UnknownClientKeyException e) {
+				throw new UnknownClientKeyException(stringField("id"));
+			} catch (DuplicateClientKeyException e) {
+				throw new DuplicateClientKeyException(stringField("id"));
+			}
 	}
 
 }

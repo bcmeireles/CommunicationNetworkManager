@@ -1,12 +1,29 @@
 package prr.clients;
 
-public class PlatinumClient extends Client {
-    
-    public Client(String id, Integrer taxID, String name) {
-        super(id, taxID, name);
+public class PlatinumClient extends ClientLevel {
+    public PlatinumClient(Client client){
+        super(client);
     }
 
-    public String getRank() {
-        return "PLATINUM";
+    @Override
+    public void normal() {
+        // Balance after communication is negative
+
+        _client.setLevel(new NormalClient(_client));
+
+    }
+
+    @Override
+    public void gold() {
+        // 2 text communications in a row and non-negative balance
+
+        _client.setLevel(new GoldClient(_client));
+
+    }
+
+    @Override
+    public void platinum() {
+        // Client is already platinum
+
     }
 }

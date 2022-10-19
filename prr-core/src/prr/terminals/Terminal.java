@@ -1,6 +1,10 @@
 package prr.terminals;
 
 import java.io.Serializable;
+import java.util.Map;
+import java.util.TreeMap;
+
+import prr.clients.Client;
 
 // FIXME add more import if needed (cannot import from pt.tecnico or prr.app)
 
@@ -28,7 +32,7 @@ public abstract class Terminal implements Serializable /* FIXME maybe addd more 
         private Client _owner;
 
         /** Terminal friends */
-        private Map<String, Client> _friends;
+        private Map<String, Terminal> _friends = new TreeMap<>();
         
         //private Map<Integrer, Notification> _notifications = new TreeMap<>();
 
@@ -53,7 +57,13 @@ public abstract class Terminal implements Serializable /* FIXME maybe addd more 
         }
 
         public Terminal(String id, Client owner, String state) {
-                // TODO - STATE
+                switch(state) {
+                        case "IDLE" -> _state = new IdleState(this);
+                        case "SILENT" -> _state = new SilenceState(this);
+                        case "BUSY" -> _state = new BusyState(this);
+                        case "OFF" -> _state = new OffState(this);
+                }
+
                 _id = id;
                 _owner = owner;
                 _payments = 0.0;
@@ -71,7 +81,8 @@ public abstract class Terminal implements Serializable /* FIXME maybe addd more 
          *          it was the originator of this communication.
          **/
         public boolean canEndCurrentCommunication() {
-                // FIXME add implementation code
+                // FIXME add implementation code 
+                return true;
         }
 
         /**
@@ -81,13 +92,32 @@ public abstract class Terminal implements Serializable /* FIXME maybe addd more 
          **/
         public boolean canStartCommunication() {
                 // FIXME add implementation code
+                return true;
         }
+
+        /** Getters */
 
         public String getID() {
                 return _id;
         }
 
-        public void addFriend(Client friend) {
+        public Client getOwner() {
+                return _owner;
+        }
+
+        public Double getPayments() {
+                return _payments;
+        }
+
+        public Double getDebt() {
+                return _debt;
+        }
+
+        public Map<String, Terminal> getFriends() {
+                return _friends;
+        }
+
+        public void addFriend(Terminal friend) {
                 _friends.put(friend.getID(), friend);
         }
 }

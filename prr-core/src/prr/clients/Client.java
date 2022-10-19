@@ -4,15 +4,17 @@ import java.io.Serializable;
 import java.util.Map;
 import java.util.TreeMap;
 
+import prr.terminals.Terminal;
+
 // FIXME add more import if needed (cannot import from pt.tecnico or prr.app)
 
-abstract public class Client implements Serializable {
+public class Client implements Serializable {
 
     /** Client ID */
     private String _id;
 
     /** Client tax ID */
-    private Integrer _taxID;
+    private int _taxID;
 
     /** Client name */
     private String _name;
@@ -34,6 +36,9 @@ abstract public class Client implements Serializable {
 
     /** Terminals owned by client */
     private Map<String, Terminal> _terminals = new TreeMap<>();
+
+    /** Client Level */
+    private ClientLevel _level = new NormalClient(this);
     
     /** Client tariff */
     // private Tariff _tariff;
@@ -46,7 +51,7 @@ abstract public class Client implements Serializable {
      * @param taxID
      * @param name
      */
-    public Client(String id, Integrer taxID, String name) {
+    public Client(String id, String name, int taxID) {
         
         _id = id;
         _taxID = taxID;
@@ -58,12 +63,34 @@ abstract public class Client implements Serializable {
         _debts = 0.0;
     }
 
+    /** Getters */
+
     public String getID() {
         return _id;
     }
+
+    public int getTaxID() {
+        return _taxID;
+    }
+
+    public String getName() {
+        return _name;
+    }
+
+    public Double getPayments() {
+        return _payments;
+    }
+
+    public Double getDebts() {
+        return _debts;
+    }
+
 
     public void addTerminal(Terminal terminal) {
         _terminals.put(terminal.getID(), terminal);
     }
 
+    public void setLevel(ClientLevel level) {
+        _level = level;
+    }
 }

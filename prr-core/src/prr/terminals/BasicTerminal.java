@@ -1,5 +1,9 @@
 package prr.terminals;
 
+import prr.clients.Client;
+
+import java.util.Map;
+
 public class BasicTerminal extends Terminal {
 
     public BasicTerminal(String id, Client owner){
@@ -17,12 +21,14 @@ public class BasicTerminal extends Terminal {
     @Override
     public String toString() {
 
-        if (_friends.length > 0) {
-            String toReturn = "BASIC|" + _id + "|" + _owner.getID() + "|" + "state" + "|" + _payments + "|" + _debt + "|"
+        Map<String, Terminal> friends = getFriends();
 
-            for (int i = 0; i < _friends.length; i++) {
-                toReturn += _friends[i].getID();
-                if (i + 1 != _friends.length) {
+        if (friends.size() > 0) {
+            String toReturn = "BASIC|" + _id + "|" + _owner.getID() + "|" + "state" + "|" + _payments + "|" + _debt + "|";
+
+            for (int i = 0; i < friends.size(); i++) {
+                toReturn += friends.get(i).getID();
+                if (i + 1 != friends.size()) {
                     toReturn += ",";
                 }
 

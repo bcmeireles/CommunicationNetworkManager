@@ -1,3 +1,8 @@
+package prr.terminals;
+
+import prr.terminals.Terminal;
+import prr.terminals.TerminalState;
+
 public class BusyState extends TerminalState {
     public BusyState(Terminal terminal) {
         super(terminal);

@@ -1,12 +1,29 @@
 package prr.clients;
 
-public class GoldClient extends Client {
-    
-    public Client(String id, Integrer taxID, String name) {
-            super(id, taxID, name);
+public class GoldClient extends ClientLevel {
+    public GoldClient(Client client){
+        super(client);
     }
 
-    public String getRank() {
-        return "GOLD";
+    @Override
+    public void normal() {
+        // Negavtive balance after communication
+
+        _client.setLevel(new NormalClient(_client));
+
+    }
+
+    @Override
+    public void gold() {
+        // Client is already gold
+
+    }
+
+    @Override
+    public void platinum() {
+        // 5 video communications in a row and non-negative balance
+
+        _client.setLevel(new PlatinumClient(_client));
+
     }
 }

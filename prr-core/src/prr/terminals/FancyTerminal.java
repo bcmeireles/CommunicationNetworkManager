@@ -1,5 +1,7 @@
 package prr.terminals;
 
+import prr.clients.Client;
+
 public class FancyTerminal extends BasicTerminal {
 
     public FancyTerminal(String id, Client owner){
@@ -23,7 +25,7 @@ public class FancyTerminal extends BasicTerminal {
     public String toString() {
 
         if (_friends.length > 0) {
-            String toReturn = "FANCY|" + _id + "|" + _owner.getID() + "|" + "state" + "|" + _payments + "|" + _debt + "|"
+            String toReturn = "FANCY|" + _id + "|" + _owner.getID() + "|" + "state" + "|" + _payments + "|" + _debt + "|";
 
             for (int i = 0; i < _friends.length; i++) {
                 toReturn += _friends[i].getID();

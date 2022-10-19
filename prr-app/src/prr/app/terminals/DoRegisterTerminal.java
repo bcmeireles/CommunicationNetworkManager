@@ -23,7 +23,17 @@ class DoRegisterTerminal extends Command<Network> {
 
 	@Override
 	protected final void execute() throws CommandException {
-                //FIXME implement command
-				
+			try {
+				_receiver.registerTerminal(
+					stringField("terminalType"),
+					stringField("terminalID"),
+					stringField("clientID"),
+					"IDLE",
+				)
+			} catch (DuplicateTerminalKeyException e) {
+				throw new DuplicateTerminalKeyException(stringField("terminalID"));
+			} catch (UnknownClientKeyException e) {
+				throw new UnknownClientKeyException(stringField("clientID"));
+			}
 	}
 }
