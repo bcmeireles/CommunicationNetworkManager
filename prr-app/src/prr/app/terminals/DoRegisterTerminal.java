@@ -33,6 +33,8 @@ class DoRegisterTerminal extends Command<Network> {
 				);
 			} catch (prr.exceptions.DuplicateTerminalKeyException e) {
 				throw new prr.app.exceptions.DuplicateTerminalKeyException(stringField("terminalID"));
+			} catch (prr.exceptions.InvalidTerminalKeyException e) {
+				throw new prr.app.exceptions.InvalidTerminalKeyException(stringField("terminalID"));
 			} catch (prr.exceptions.UnknownClientKeyException e) {
 				throw new prr.app.exceptions.UnknownClientKeyException(stringField("clientID"));
 			} catch (prr.exceptions.UnrecognizedEntryException e) {

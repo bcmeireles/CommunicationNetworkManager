@@ -30,7 +30,7 @@ public class Network implements Serializable {
 	private static final long serialVersionUID = 202208091753L;
 
 	/** Clients */
-	private final Map<String, Client> _clients = new TreeMap<>();
+	private final Map<String, Client> _clients = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
 
 	/** Terminals */
 	private final Map<String, Terminal> _terminals = new TreeMap<>();
@@ -69,13 +69,6 @@ public class Network implements Serializable {
 		}
     }
 
-	/**
-	 * Register a new client.
-	 * @param id client id
-	 * @param name client name
-	 * @param taxID client tax id
-	 * @throws DuplicateClientKeyException if the client id is already registered
-	 */
 	public void registerClient(String id, String name, int taxID) throws DuplicateClientKeyException {
 		if (_clients.containsKey(id)) {
 			throw new DuplicateClientKeyException(id);
@@ -85,22 +78,18 @@ public class Network implements Serializable {
 		setChanged(true);
 	}
 
-	/**
-	 * Parse the arguments for a new terminal.
-	 * @param id terminal id
-	 * @param type terminal type
-	 * @param clientID client id
-	 * @param state terminal state
-	 * @throws DuplicateTerminalKeyException if the terminal id is already registered
-	 * @throws UnknownClientKeyException if the client id is not registered
-	 */
-	public void registerTerminal(String id, String type, String clientID, String state) throws DuplicateTerminalKeyException, UnknownClientKeyException, UnrecognizedEntryException {
+	public void registerTerminal(String id, String type, String clientID, String state) throws InvalidTerminalKeyException, DuplicateTerminalKeyException, UnknownClientKeyException, UnrecognizedEntryException {
+		if (!id.matches("[0-9]{6}")) {
+			throw new InvalidTerminalKeyException(id);
+		}
+		
 		if (_terminals.containsKey(id)) {
 			throw new DuplicateTerminalKeyException(id);
 		}
 		if (!_clients.containsKey(clientID)) {
 			throw new UnknownClientKeyException(clientID);
 		}
+
 		Terminal terminal;
 
 		switch (state) {
@@ -116,14 +105,6 @@ public class Network implements Serializable {
 
 	}
 	
-	/**
-	 * Register a new basic terminal.
-	 * @param id terminal id
-	 * @param clientID client id
-	 * @param state terminal state
-	 * @throws DuplicateTerminalKeyException if the terminal id is already registered
-	 * @throws UnknownClientKeyException if the client id is not registered
-	 */
 	public BasicTerminal registerBasicTerminal(String id, String clientID, String state) throws DuplicateTerminalKeyException, UnknownClientKeyException, UnrecognizedEntryException {
 		if (id.length() != 6) {
 			throw new UnrecognizedEntryException(id);
@@ -145,14 +126,6 @@ public class Network implements Serializable {
 		return terminal;
 	}
 
-	/**
-	 * Register a new fancy terminal.
-	 * @param id terminal id
-	 * @param clientID client id
-	 * @param state terminal state
-	 * @throws DuplicateTerminalKeyException if the terminal id is already registered
-	 * @throws UnknownClientKeyException if the client id is not registered
-	 */
 	public FancyTerminal registerFancyTerminal(String id, String clientID, String state) throws DuplicateTerminalKeyException, UnknownClientKeyException, UnrecognizedEntryException {
 		if (id.length() != 6) {
 			throw new UnrecognizedEntryException(id);
@@ -174,12 +147,6 @@ public class Network implements Serializable {
 		return terminal;
 	}
 
-	/**
-	 * Import a list of friends to a terminal.
-	 * @param split friends list
-	 * @throws DuplicateTerminalKeyException if the terminal id is already registered
-	 * @throws UnknownClientKeyException if the client id is not registered
-	 */
 	public void registerFriends(String[] split) throws UnrecognizedEntryException {
 		if (split.length != 3) {
 			throw new UnrecognizedEntryException(split[0]);
@@ -204,11 +171,6 @@ public class Network implements Serializable {
 		setChanged(true);
 	}
 
-	/**
-	 * Get a client string representation.
-	 * @param id client id
-	 * @throws UnknownClientKeyException if the client id is not registered
-	 */
 	public String showClient(String id) throws UnknownClientKeyException {
 		if (!_clients.containsKey(id)) {
 			throw new UnknownClientKeyException(id);
@@ -219,9 +181,6 @@ public class Network implements Serializable {
 		return client.toString();
 	}
 
-	/**
-	 * Get all clients string representation.
-	 */
 	public String getAllClients() {
 		if (_clients.isEmpty()) {
 			return "";
@@ -234,11 +193,6 @@ public class Network implements Serializable {
 		return sb.toString();
 	}
 
-	/**
-	 * Get a terminal string representation.
-	 * @param id terminal id
-	 * @throws UnknownTerminalKeyException if the terminal id is not registered
-	 */
 	public Terminal getTerminal(String id) throws UnknownTerminalKeyException {
 		if (!_terminals.containsKey(id)) {
 			throw new UnknownTerminalKeyException(id);
@@ -247,9 +201,6 @@ public class Network implements Serializable {
 		return _terminals.get(id);
 	}
 
-	/**
-	 * Get all terminals string representation.
-	 */
 	public String getAllTerminals() {
 		if (_terminals.isEmpty()) {
 			return "";
@@ -263,10 +214,10 @@ public class Network implements Serializable {
 
 	}
 
-	/**
-	 * Get all terminals string representation.
-	 */
 	public String getUnusedTerminals() {
+		if (_terminals.isEmpty()) {
+			return "";
+		}
 		StringBuilder sb = new StringBuilder();
 		for (Terminal terminal : _terminals.values()) {
 			if (terminal.isUnused()) {
