@@ -31,6 +31,12 @@ public class Client implements Serializable {
     /** Has notifications enabled */
     private boolean _notificationEnabled = true;
 
+    /** Number of text communications in a row */
+    private int _textStreak = 0;
+
+    /** Number of video communications in a row */
+    private int _videoStreak = 0;
+
     /** Terminals owned by client */
     private Map<String, Terminal> _terminals = new TreeMap<>();
 
@@ -69,6 +75,10 @@ public class Client implements Serializable {
         return _name;
     }
 
+    public Double getBalance() {
+        return _balance;
+    }
+
     public Double getPayments() {
         return _payments;
     }
@@ -77,6 +87,13 @@ public class Client implements Serializable {
         return _debts;
     }
 
+    public int getTextStreak() {
+        return _textStreak;
+    }
+
+    public int getVideoStreak() {
+        return _videoStreak;
+    }
 
     public void addTerminal(Terminal terminal) {
         _terminals.put(terminal.getID(), terminal);
@@ -92,7 +109,25 @@ public class Client implements Serializable {
 
     public Integer terminalCount() {
         return _terminals.size();
-    } 
+    }
+
+    public void addTextStreak() {
+        _textStreak += 1;
+    }
+
+    public void resetTextStreak() {
+        _textStreak = 0;
+    }
+
+    public void addVideoStreak() {
+        _videoStreak += 1;
+    }
+
+    public void resetVideoStreak() {
+        _videoStreak = 0;
+    }
+
+    
 
     @Override
     public String toString() {

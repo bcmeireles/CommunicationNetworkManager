@@ -8,21 +8,18 @@ public class NormalClient extends ClientLevel {
     @Override
     public void normal() {
         // Client is already normal
-
     }
 
     @Override
     public void gold() {
-        // Balance above 500 after payment
-
-        _client.setLevel(new GoldClient(_client));
-
+        if (_client.getBalance() > 500) {
+            _client.setLevel(new GoldClient(_client));
+        }
     }
 
     @Override
     public void platinum() {
         // Not possible
-
     }
 
     @Override

@@ -7,24 +7,23 @@ public class GoldClient extends ClientLevel {
 
     @Override
     public void normal() {
-        // Negavtive balance after communication
-
-        _client.setLevel(new NormalClient(_client));
-
+        // negative balance
+        if (_client.getBalance() < 0) {
+            _client.setLevel(new NormalClient(_client));
+        }
     }
 
     @Override
     public void gold() {
         // Client is already gold
-
     }
 
     @Override
     public void platinum() {
         // 5 video communications in a row and non-negative balance
-
-        _client.setLevel(new PlatinumClient(_client));
-
+        if (_client.getBalance() > 0 && _client.getVideoStreak() == 5) {
+            _client.setLevel(new PlatinumClient(_client));
+        }
     }
 
     @Override

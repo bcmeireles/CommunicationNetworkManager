@@ -7,24 +7,22 @@ public class PlatinumClient extends ClientLevel {
 
     @Override
     public void normal() {
-        // Balance after communication is negative
-
-        _client.setLevel(new NormalClient(_client));
-
+        if (_client.getBalance() < 0) {
+            _client.setLevel(new NormalClient(_client));
+        }
     }
 
     @Override
     public void gold() {
         // 2 text communications in a row and non-negative balance
-
-        _client.setLevel(new GoldClient(_client));
-
+        if (_client.getTextStreak() == 2 && _client.getBalance() > 0) {
+            _client.setLevel(new GoldClient(_client));
+        }
     }
 
     @Override
     public void platinum() {
         // Client is already platinum
-
     }
 
     @Override
