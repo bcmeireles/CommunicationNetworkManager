@@ -127,7 +127,7 @@ public class Client implements Serializable {
         _videoStreak = 0;
     }
 
-    
+    /** TODO getText/Voice/Video cost */    
 
     @Override
     public String toString() {

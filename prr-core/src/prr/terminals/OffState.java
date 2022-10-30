@@ -10,26 +10,22 @@ public class OffState extends TerminalState {
 
     @Override
     public void idle() {
-        _terminal.setState(new IdleState(_terminal));
-        
+        _terminal.setState(new IdleState(_terminal));        
     }
 
     @Override
     public void silence() {
         _terminal.setState(new SilenceState(_terminal));
-
     }
 
     @Override
     public void busy() {
         // Not possible
-
     }
 
     @Override
     public void off() {
         // Already Off
-
     }
 
     @Override
