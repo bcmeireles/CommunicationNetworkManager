@@ -20,8 +20,8 @@ public class TextCommunication extends Communication {
         _text = text;
     }
 
-    public double calculateCost(Client client) {
-        return client.getTextCost(String _text);
+    public double calculateCost() {
+        // TODO
     }
 
 }

@@ -5,21 +5,21 @@ import prr.terminals.Terminal;
 public class VideoCommunication extends Communication {
 
     /** Communication duration */
-    private double _duration;
+    private int _duration;
 
     public class VideoCommunication(int id, Terminal origin, Terminal destination) {
         super(id, origin, destination);
     }
 
-    public double getDuration() {
+    public int getDuration() {
         return _duration;
     }
 
-    public void setDuration(double duration) {
+    public void setDuration(int duration) {
         _duration = duration;
     }
 
     public double calculateCost(Client client) {
-        return _duration * client.getVideoCost();
+        // TODO
     }
 }

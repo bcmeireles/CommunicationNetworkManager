@@ -23,10 +23,10 @@ public abstract class Terminal implements Serializable /* FIXME maybe addd more 
         private String _id;
         
         /** payments made by Terminal*/
-        private Double _payments = 0.0;
+        private double _payments = 0.0;
 
         /** Terminal debt */
-        private Double _debt = 0.0;
+        private double _debt = 0.0;
 
         /** Terminal owner */
         private Client _owner;
@@ -104,11 +104,11 @@ public abstract class Terminal implements Serializable /* FIXME maybe addd more 
                 return _owner;
         }
 
-        public Double getPayments() {
+        public double getPayments() {
                 return _payments;
         }
 
-        public Double getDebt() {
+        public double getDebt() {
                 return _debt;
         }
 

@@ -3,6 +3,7 @@ package prr.communications;
 import java.io.Serializable;
 
 import prr.terminals.Terminal;
+import prr.terminals.Client;
 
 public abstract Communication implements Serializable {
 
