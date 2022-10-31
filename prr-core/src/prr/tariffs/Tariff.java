@@ -50,37 +50,43 @@ public abstract class Tariff implements Serializable {
         _videoCostPlatinum = videoCostPlatinum;
     }
     
-    public double getTextCostNormal(int n) {
-        if (n < 50)
+    public double getTextCostNormal(int duration) {
+        if (duration < 50)
             return _smallTextCostNormal;
 
-        if (50 <= n < 100) 
+        if (50 <= duration && duration < 100) 
             return _mediumTextCostNormal;
 
-        if (n >= 100)
-            return _largeTextCostNormal * n;
+        if (duration >= 100)
+            return _largeTextCostNormal * duration;
+
+        return 0.0;
     }
     
-    public double getTextCostGold(int n) {
-        if (n < 50)
+    public double getTextCostGold(int duration) {
+        if (duration < 50)
             return _smallTextCostGold;
 
-        if (50 <= n < 100) 
+        if (50 <= duration && duration < 100) 
             return _mediumTextCostGold;
 
-        if (n >= 100)
-            return _largeTextCostGold * n;
+        if (duration >= 100)
+            return _largeTextCostGold * duration;
+
+        return 0.0;
     }
 
-    public double getTextCostPlatinum(int n) {
-        if (n < 50)
+    public double getTextCostPlatinum(int duration) {
+        if (duration < 50)
             return _smallTextCostPlatinum;
 
-        if (50 <= n < 100) 
+        if (50 <= duration && duration < 100) 
             return _mediumTextCostPlatinum;
 
-        if (n >= 100)
+        if (duration >= 100)
             return _largeTextCostPlatinum;
+            
+        return 0.0;
     }
 
     public double getVoiceCostNormal(int duration) {

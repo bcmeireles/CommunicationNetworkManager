@@ -26,6 +26,18 @@ public class GoldClient extends ClientLevel {
         }
     }
 
+    public double getTextCost(int length) {
+        return _client.getTariff().getTextCostGold(length);
+    }
+
+    public double getVoiceCost(int duration) {
+        return _client.getTariff().getVoiceCostGold(duration);
+    }
+
+    public double getVideoCost(int duration) {
+        return _client.getTariff().getVideoCostGold(duration);
+    }
+
     @Override
     public String toString() {
         return "GOLD";

@@ -6,6 +6,9 @@ import java.util.TreeMap;
 
 import prr.terminals.Terminal;
 
+import prr.tariffs.Tariff;
+import prr.tariffs.BaseTariff;
+
 // FIXME add more import if needed (cannot import from pt.tecnico or prr.app)
 
 public class Client implements Serializable {
@@ -42,6 +45,8 @@ public class Client implements Serializable {
 
     /** Client Level */
     private ClientLevel _level = new NormalClient(this);
+
+    private Tariff _tariff = new BaseTariff();
     
     /** Client tariff */
     // private Tariff _tariff;
@@ -127,7 +132,14 @@ public class Client implements Serializable {
         _videoStreak = 0;
     }
 
-    /** TODO getText/Voice/Video cost */    
+    public ClientLevel getLevel() {
+        return _level;
+    }
+
+    public Tariff getTariff() {
+        return _tariff;
+    }
+ 
 
     @Override
     public String toString() {

@@ -18,10 +18,13 @@ public class TextCommunication extends Communication {
 
     public void setText(String text) {
         _text = text;
+        setUnits(text.length());
+    }
+    
+    public double calculateCost() {
+        return getOrigin().getOwner().getLevel().getTextCost(getUnits());               
     }
 
-    public double calculateCost() {
-        // TODO
-    }
+
 
 }

@@ -120,6 +120,10 @@ public abstract class Terminal implements Serializable /* FIXME maybe addd more 
                 _friends.put(friend.getID(), friend);
         }
 
+        public boolean isFriend(Terminal friend) {
+                return _friends.containsKey(friend.getID());
+        }
+
         public void markUsed() {
                 _isUnused = false;
         }

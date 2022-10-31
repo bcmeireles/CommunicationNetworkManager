@@ -11,6 +11,12 @@ import prr.terminals.Terminal;
 import prr.terminals.BasicTerminal;
 import prr.terminals.FancyTerminal;
 
+import prr.communications.Communication;
+import prr.communications.TextCommunication;
+import prr.communications.InteractiveCommunication;
+import prr.communications.VoiceCommunication;
+import prr.communications.VideoCommunication;
+
 import prr.exceptions.*;
 
 import java.io.BufferedReader;
@@ -35,6 +41,9 @@ public class Network implements Serializable {
 	/** Terminals */
 	private final Map<String, Terminal> _terminals = new TreeMap<>();
 
+	/** Communications */
+	private final Map<Integer, Communication> _communications = new TreeMap<>();
+
 	/** Network object has been changed. */
 	private boolean _changed = false;
 
@@ -51,7 +60,7 @@ public class Network implements Serializable {
      * @throws UnrecognizedEntryException if some entry is not correct
 	 * @throws IOException if there is an IO erro while processing the text file
 	 */
-	void importFile(String filename) throws UnrecognizedEntryException, IOException, DuplicateClientKeyException, DuplicateTerminalKeyException, UnknownClientKeyException /* FIXME maybe other exceptions */  {
+	void importFile(String filename) throws InvalidTerminalKeyException, UnrecognizedEntryException, IOException, DuplicateClientKeyException, DuplicateTerminalKeyException, UnknownClientKeyException /* FIXME maybe other exceptions */  {
 		String currentLine;
 		String[] splitLine;
 		
@@ -61,8 +70,8 @@ public class Network implements Serializable {
 			
 			switch (splitLine[0]) {
 				case "CLIENT" -> registerClient(splitLine[1], splitLine[2], Integer.parseInt(splitLine[3]));
-				case "BASIC" -> registerBasicTerminal(splitLine[1], splitLine[2], splitLine[3]);
-				case "FANCY" -> registerFancyTerminal(splitLine[1], splitLine[2], splitLine[3]);
+				case "BASIC" -> registerTerminal(splitLine[1], "BASIC", splitLine[2], splitLine[3]);
+				case "FANCY" -> registerTerminal(splitLine[1], "FANCY", splitLine[2], splitLine[3]);
 				case "FRIENDS" -> registerFriends(splitLine);
 				default -> throw new UnrecognizedEntryException(currentLine);
 			}
@@ -78,7 +87,7 @@ public class Network implements Serializable {
 		setChanged(true);
 	}
 
-	public void registerTerminal(String id, String type, String clientID, String state) throws InvalidTerminalKeyException, DuplicateTerminalKeyException, UnknownClientKeyException, UnrecognizedEntryException {
+	public Terminal registerTerminal(String id, String type, String clientID, String state) throws InvalidTerminalKeyException, DuplicateTerminalKeyException, UnknownClientKeyException, UnrecognizedEntryException {
 		if (!id.matches("[0-9]{6}")) {
 			throw new InvalidTerminalKeyException(id);
 		}
@@ -91,6 +100,7 @@ public class Network implements Serializable {
 		}
 
 		Terminal terminal;
+		Client client = _clients.get(clientID);
 
 		switch (state) {
 			case "SILENCE" -> state = "SILENT";
@@ -98,54 +108,59 @@ public class Network implements Serializable {
 		}
 
 		switch (type) {
-			case "BASIC" -> terminal = registerBasicTerminal(id, clientID, state);
-			case "FANCY" -> terminal = registerFancyTerminal(id, clientID, state);
+			case "BASIC" -> terminal = new BasicTerminal(id, client, state);
+			case "FANCY" -> terminal = new FancyTerminal(id, client, state);
 			default -> throw new UnrecognizedEntryException(type);
 		}
+		
+		_terminals.put(id, terminal);
+		client.addTerminal(terminal);
+		setChanged(true);
+		return terminal;
 
 	}
 	
-	public BasicTerminal registerBasicTerminal(String id, String clientID, String state) throws DuplicateTerminalKeyException, UnknownClientKeyException, UnrecognizedEntryException {
-		if (id.length() != 6) {
-			throw new UnrecognizedEntryException(id);
-		}
-		
-		if (_terminals.containsKey(id)) {
-			throw new DuplicateTerminalKeyException(id);
-		}
-
-		if(!_clients.containsKey(clientID)) {
-			throw new UnknownClientKeyException(clientID);
-		}
-
-		Client client = _clients.get(clientID);
-		BasicTerminal terminal = new BasicTerminal(id, client, state);
-		_terminals.put(id, terminal);
-		client.addTerminal(terminal);
-		setChanged(true);
-		return terminal;
-	}
-
-	public FancyTerminal registerFancyTerminal(String id, String clientID, String state) throws DuplicateTerminalKeyException, UnknownClientKeyException, UnrecognizedEntryException {
-		if (id.length() != 6) {
-			throw new UnrecognizedEntryException(id);
-		}
-		
-		if (_terminals.containsKey(id)) {
-			throw new DuplicateTerminalKeyException(id);
-		}
-
-		if(!_clients.containsKey(clientID)) {
-			throw new UnknownClientKeyException(clientID);
-		}
-
-		Client client = _clients.get(clientID);
-		FancyTerminal terminal = new FancyTerminal(id, client, state);
-		_terminals.put(id, terminal);
-		client.addTerminal(terminal);
-		setChanged(true);
-		return terminal;
-	}
+	//public BasicTerminal registerBasicTerminal(String id, String clientID, String state) throws DuplicateTerminalKeyException, UnknownClientKeyException, UnrecognizedEntryException {
+	//	if (id.length() != 6) {
+	//		throw new UnrecognizedEntryException(id);
+	//	}
+	//	
+	//	if (_terminals.containsKey(id)) {
+	//		throw new DuplicateTerminalKeyException(id);
+	//	}
+//
+	//	if(!_clients.containsKey(clientID)) {
+	//		throw new UnknownClientKeyException(clientID);
+	//	}
+//
+	//	Client client = _clients.get(clientID);
+	//	BasicTerminal terminal = new BasicTerminal(id, client, state);
+	//	_terminals.put(id, terminal);
+	//	client.addTerminal(terminal);
+	//	setChanged(true);
+	//	return terminal;
+	//}
+//
+	//public FancyTerminal registerFancyTerminal(String id, String clientID, String state) throws DuplicateTerminalKeyException, UnknownClientKeyException, UnrecognizedEntryException {
+	//	if (id.length() != 6) {
+	//		throw new UnrecognizedEntryException(id);
+	//	}
+	//	
+	//	if (_terminals.containsKey(id)) {
+	//		throw new DuplicateTerminalKeyException(id);
+	//	}
+//
+	//	if(!_clients.containsKey(clientID)) {
+	//		throw new UnknownClientKeyException(clientID);
+	//	}
+//
+	//	Client client = _clients.get(clientID);
+	//	FancyTerminal terminal = new FancyTerminal(id, client, state);
+	//	_terminals.put(id, terminal);
+	//	client.addTerminal(terminal);
+	//	setChanged(true);
+	//	return terminal;
+	//}
 
 	public void registerFriends(String[] split) throws UnrecognizedEntryException {
 		if (split.length != 3) {
@@ -229,6 +244,50 @@ public class Network implements Serializable {
 
 	}
 
+	public TextCommunication sendTextCommunication(Terminal origin, Terminal destination, String text) {
+		int id = _communications.size() + 1;
+
+		TextCommunication textCom = new TextCommunication(id, origin, destination, text);
+		
+		double cost = textCom.calculateCost();
+		
+		if (origin.isFriend(destination)) {
+			cost = cost * 0.5;
+			textCom.setCost(cost);
+		}
+
+		_communications.put(id, textCom);
+		
+		setChanged(true);
+
+		return textCom;
+	}
+
+	public InteractiveCommunication startInteractiveCommunication(String type, Terminal origin, Terminal destination) {
+		int id = _communications.size() + 1;
+
+		InteractiveCommunication newCom;
+
+		switch (type) {
+			case "VOICE" -> newCom = new VoiceCommunication(id, origin, destination);
+			case "VIDEO" -> newCom = new VideoCommunication(id, origin, destination);
+			default -> throw new IllegalArgumentException(/** placeholder */);
+		}
+
+		double cost = newCom.calculateCost();
+
+		if (origin.isFriend(destination)) {
+			cost = cost * 0.5;
+			newCom.setCost(cost);
+		}
+
+		_communications.put(id, newCom);
+
+		setChanged(true);
+
+		return newCom;
+	}
+
 	public void setChanged(boolean changed) {
 		_changed = changed;
 	}
@@ -236,5 +295,4 @@ public class Network implements Serializable {
 	public boolean hasChanged() {
 		return _changed;
 	}
-
 }

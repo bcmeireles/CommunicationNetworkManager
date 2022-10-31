@@ -3,9 +3,8 @@ package prr.communications;
 import java.io.Serializable;
 
 import prr.terminals.Terminal;
-import prr.terminals.Client;
 
-public abstract Communication implements Serializable {
+public abstract class Communication implements Serializable {
 
     /** Communication ID */
     private int _id;
@@ -18,6 +17,12 @@ public abstract Communication implements Serializable {
 
     /** Communication cost */
     private double _cost = 0.0;
+
+    /** Message length for Text Communications and duration for Voice/Video */
+    private int _units = 0;
+
+    /** Friendship status between origin and destination */
+    private boolean _friendshipStatus;
 
     public Communication(int id, Terminal origin, Terminal destination) {
         _id = id;
@@ -44,4 +49,13 @@ public abstract Communication implements Serializable {
     public void setCost(double cost) {
         _cost = cost;
     }
+
+    public int getUnits() {
+        return _units;
+    }
+
+    public void setUnits(int units) {
+        _units = units;
+    }
+
 }

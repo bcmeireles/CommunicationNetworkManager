@@ -18,6 +18,7 @@ import prr.exceptions.UnrecognizedEntryException;
 import prr.exceptions.DuplicateClientKeyException;
 import prr.exceptions.DuplicateTerminalKeyException;
 import prr.exceptions.UnknownClientKeyException;
+import prr.exceptions.InvalidTerminalKeyException;
 
 
 //FIXME add more import if needed (cannot import from pt.tecnico or prr.app)
@@ -99,7 +100,7 @@ public class NetworkManager {
 	public void importFile(String filename) throws ImportFileException {
 		try {
             	_network.importFile(filename);
-        } catch (IOException | UnrecognizedEntryException | DuplicateClientKeyException | DuplicateTerminalKeyException | UnknownClientKeyException /* FIXME maybe other exceptions */ e) {
+        } catch (IOException | UnrecognizedEntryException | InvalidTerminalKeyException | DuplicateClientKeyException | DuplicateTerminalKeyException | UnknownClientKeyException /* FIXME maybe other exceptions */ e) {
                         throw new ImportFileException(filename, e);
     }
 	}
