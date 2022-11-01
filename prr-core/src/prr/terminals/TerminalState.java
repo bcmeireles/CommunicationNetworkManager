@@ -20,4 +20,7 @@ public abstract class TerminalState implements Serializable {
 
     /** Behaviour for turning off */
     public abstract void off();
+
+    public abstract boolean isBusy();
+    public abstract boolean isOff();
 }

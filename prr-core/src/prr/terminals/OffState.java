@@ -29,6 +29,16 @@ public class OffState extends TerminalState {
     }
 
     @Override
+    public boolean isBusy() {
+        return false;
+    }
+
+    @Override
+    public boolean isOff() {
+        return true;
+    }
+
+    @Override
     public String toString() {
         return "OFF";
     }

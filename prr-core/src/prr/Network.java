@@ -288,6 +288,36 @@ public class Network implements Serializable {
 		return newCom;
 	}
 
+	public void endInteractiveCommunication(InteractiveCommunication com) {
+		com.end();
+		setChanged(true);
+	}
+
+	/** 
+	* public String showStartedCommunications(String clientID) {
+	* 	StringBuilder sb = new StringBuilder();
+	* 	for (Communication communication : _communications.values()) {
+	* 		if (communication.getOrigin().getClient().equals(client)) {
+	* 			sb.append(communication.toString() + "\n");
+	* 		}
+	* 	}
+	* 	sb.deleteCharAt(sb.length() - 1);
+	* 	return sb.toString();
+	* }
+	* 
+	* public String showReceivedCommunications(String clientID) {
+	* 	StringBuilder sb = new StringBuilder();
+	* 	for (Communication communication : _communications.values()) {
+	* 		if (communication.getDestination().getClient().getID().equals(client)) {
+	* 			sb.append(communication.toString() + "\n");
+	* 		}
+	* 	}
+	* 	sb.deleteCharAt(sb.length() - 1);
+	* 	return sb.toString();
+	* }
+	* 
+	*/
+
 	public void setChanged(boolean changed) {
 		_changed = changed;
 	}

@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import prr.clients.Client;
+import prr.communications.Communication;
 
 // FIXME add more import if needed (cannot import from pt.tecnico or prr.app)
 
@@ -36,6 +37,10 @@ public abstract class Terminal implements Serializable /* FIXME maybe addd more 
 
         /**  */
         private boolean _isUnused = true;
+
+        private boolean _isCommunicating = false;
+
+        private Communication _currentCommunication = null;
         
         //private Map<Integer, Notification> _notifications = new TreeMap<>();
 
@@ -80,7 +85,10 @@ public abstract class Terminal implements Serializable /* FIXME maybe addd more 
          *          it was the originator of this communication.
          **/
         public boolean canEndCurrentCommunication() {
-                // FIXME add implementation code 
+
+                if (_isCommunicating && _currentCommunication.getOrigin() == this)
+                        return true;
+
                 return false;
         }
 
@@ -90,8 +98,13 @@ public abstract class Terminal implements Serializable /* FIXME maybe addd more 
          * @return true if this terminal is neither off neither busy, false otherwise.
          **/
         public boolean canStartCommunication() {
-                // FIXME add implementation code
-                return true;
+                // PODEMOS USAR INSTANCE OF?
+                //return !(_state instanceof OffState) && !(_state instanceof BusyState);
+
+                if (!_state.isBusy() && !_state.isOff())
+                        return true;
+
+                return false;
         }
 
         /** Getters */
@@ -134,5 +147,21 @@ public abstract class Terminal implements Serializable /* FIXME maybe addd more 
 
         public TerminalState getState() {
                 return _state;
+        }
+
+        public boolean isCommunicating() {
+                return _isCommunicating;
+        }
+
+        public void changeCommunicating() {
+                _isCommunicating = !_isCommunicating;
+        }
+
+        public Communication getCurrentCommunication() {
+                return _currentCommunication;
+        }
+
+        public void setCurrentCommunication(Communication communication) {
+                _currentCommunication = communication;
         }
 }
