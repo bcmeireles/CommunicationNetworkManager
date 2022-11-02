@@ -16,6 +16,17 @@ public class VoiceCommunication extends InteractiveCommunication {
     }
 
     @Override
+    public long calculateCost() {
+        return getOrigin().getOwner().getLevel().getVoiceCost(getUnits());        
+    }
+
+
+    @Override
+    public long calculateCost(int duration) {
+        return getOrigin().getOwner().getLevel().getVoiceCost(duration);        
+    }
+
+    @Override
     public String toString() {
         return "VOICE|" + getID() + "|" + getOrigin().getID() + "|" + getDestination().getID() + "|" + getUnits() + "|" + getCost() + "|" + (isOnGoing() ? "ONGOING" : "FINISHED");
     }

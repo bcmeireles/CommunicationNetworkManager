@@ -34,14 +34,5 @@ public abstract class InteractiveCommunication extends Communication {
         getDestination().setPreviousState();
     }
 
-    @Override
-    public long calculateCost() {
-        return getOrigin().getOwner().getLevel().getVideoCost(getUnits());        
-    }
-
-
-    @Override
-    public long calculateCost(int duration) {
-        return getOrigin().getOwner().getLevel().getVideoCost(duration);        
-    }
+    
 }

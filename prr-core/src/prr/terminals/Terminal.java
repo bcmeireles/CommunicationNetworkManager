@@ -154,6 +154,10 @@ public abstract class Terminal implements Serializable /* FIXME maybe addd more 
                 return _debt;
         }
 
+        public long getBalance() {
+                return _balance;
+        }
+
         public Map<String, Terminal> getFriends() {
                 return _friends;
         }
@@ -162,11 +166,12 @@ public abstract class Terminal implements Serializable /* FIXME maybe addd more 
                 _friends.put(friend.getID(), friend);
         }
 
-        public void addFriend(String friendID, Network network) throws UnknownTerminalKeyException{
+        public void addFriend(String friendID, Network network) throws UnknownTerminalKeyException, TerminalCannotAddItselfException {
                 try {
-                        _friends.put(friendID, network.getTerminal(friendID));
-                } catch (UnknownTerminalKeyException e) {
-                        throw new UnknownTerminalKeyException(friendID);
+                        //_friends.put(friendID, network.getTerminal(friendID));
+                        network.addFriend(this, friendID);
+                } catch (UnknownTerminalKeyException | TerminalCannotAddItselfException e) {
+                        throw e;
                 }
         }
 
@@ -244,6 +249,15 @@ public abstract class Terminal implements Serializable /* FIXME maybe addd more 
                 if (!_isCommunicating)
                         throw new NoCurrentCommunicationException();
                 return _currentCommunication.toString();
+        }
+
+        @Override
+        public boolean equals(Object o) {
+                if (o instanceof Terminal) {
+                        Terminal t = (Terminal) o;
+                        return t.getID().equals(this.getID());
+                }
+                return false;
         }
 
 }

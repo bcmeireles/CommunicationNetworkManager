@@ -13,9 +13,10 @@ class DoShowAllCommunications extends Command<Network> {
 	DoShowAllCommunications(Network receiver) {
 		super(Label.SHOW_ALL_COMMUNICATIONS, receiver);
 	}
-
+	
 	@Override
 	protected final void execute() throws CommandException {
-                //FIXME implement command
+		_display.popup(_receiver.getAllCommunications());
 	}
 }
+

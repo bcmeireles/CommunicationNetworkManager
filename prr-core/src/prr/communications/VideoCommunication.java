@@ -16,6 +16,17 @@ public class VideoCommunication extends InteractiveCommunication {
     }
 
     @Override
+    public long calculateCost() {
+        return getOrigin().getOwner().getLevel().getVideoCost(getUnits());        
+    }
+
+
+    @Override
+    public long calculateCost(int duration) {
+        return getOrigin().getOwner().getLevel().getVideoCost(duration);        
+    }
+
+    @Override
     public String toString() {
         return "VIDEO|" + getID() + "|" + getOrigin().getID() + "|" + getDestination().getID() + "|" + getUnits() + "|" + getCost() + "|" + (isOnGoing() ? "ONGOING" : "FINISHED");
     }

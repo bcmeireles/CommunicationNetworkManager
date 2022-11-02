@@ -271,6 +271,8 @@ public class Network implements Serializable {
 
 		TextCommunication textCom = new TextCommunication(id, origin, destination, text);
 		
+		textCom.setUnits(text.length());
+
 		long cost = textCom.calculateCost();
 		textCom.setCost(cost);
 		origin.addDebt(cost);
@@ -351,12 +353,17 @@ public class Network implements Serializable {
 	* 
 	*/
 
-	//public void addFriend(Terminal friender, String friendID) {
-	//	Terminal friend = _terminals.get(friendID);
-//
-	//	friender.addFriend(friend);
-	//	setChanged(true);
-	//}
+	public void addFriend(Terminal friender, String friendID) throws UnknownTerminalKeyException, TerminalCannotAddItselfException {
+
+		Terminal friend = _terminals.get(friendID);
+
+		if (friender.equals(friend)) {
+			throw new TerminalCannotAddItselfException();
+		}
+
+		friender.addFriend(friend);
+		setChanged(true);
+	}
 
 	public void removeFriend(String frienderID, String friendID) {
 		Terminal friender = _terminals.get(frienderID);
@@ -372,5 +379,87 @@ public class Network implements Serializable {
 
 	public boolean hasChanged() {
 		return _changed;
+	}
+
+	public String getAllCommunications() {
+		if (_communications.isEmpty()) {
+			return "";
+		}
+		StringBuilder sb = new StringBuilder();
+		for (Communication communication : _communications.values()) {
+			sb.append(communication.toString() + "\n");
+		}
+		sb.deleteCharAt(sb.length() - 1);
+		return sb.toString();
+	}
+	
+	public String showClientsWithDebts() {
+		if (_clients.isEmpty()) {
+			return "";
+		}
+		StringBuilder sb = new StringBuilder();
+		for (Client client : _clients.values()) {
+			if (client.getDebt() > 0) {
+				sb.append(client.toString() + "\n");
+			}
+		}
+		sb.deleteCharAt(sb.length() - 1);
+		return sb.toString();
+	}
+	
+	public String showClientsWithoutDebts() {
+		if (_clients.isEmpty()) {
+			return "";
+		}
+		StringBuilder sb = new StringBuilder();
+		for (Client client : _clients.values()) {
+			if (client.getDebt() == 0) {
+				sb.append(client.toString() + "\n");
+			}
+		}
+		sb.deleteCharAt(sb.length() - 1);
+		return sb.toString();
+	}
+
+	public String showTerminalsWithPositiveBalance() {
+		if (_terminals.isEmpty()) {
+			return "";
+		}
+		StringBuilder sb = new StringBuilder();
+		for (Terminal terminal : _terminals.values()) {
+			if (terminal.getBalance() > 0) {
+				sb.append(terminal.toString() + "\n");
+			}
+		}
+		sb.deleteCharAt(sb.length() - 1);
+		return sb.toString();
+	}
+
+	public String showCommunicationsToClient(String clientID) {
+		if (_communications.isEmpty()) {
+			return "";
+		}
+		StringBuilder sb = new StringBuilder();
+		for (Communication communication : _communications.values()) {
+			if (communication.getDestination().getOwner().getID().equals(clientID)) {
+				sb.append(communication.toString() + "\n");
+			}
+		}
+		sb.deleteCharAt(sb.length() - 1);
+		return sb.toString();
+	}
+
+	public String showCommunicationsFromClient(String clientID) {
+		if (_communications.isEmpty()) {
+			return "";
+		}
+		StringBuilder sb = new StringBuilder();
+		for (Communication communication : _communications.values()) {
+			if (communication.getOrigin().getOwner().getID().equals(clientID)) {
+				sb.append(communication.toString() + "\n");
+			}
+		}
+		sb.deleteCharAt(sb.length() - 1);
+		return sb.toString();
 	}
 }

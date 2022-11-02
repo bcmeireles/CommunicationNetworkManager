@@ -28,7 +28,7 @@ public class FancyTerminal extends BasicTerminal {
         StringBuilder sb = new StringBuilder();
 
         if (friends.size() > 0) {
-            sb.append("FANCY|" + getID() + "|" + getOwner().getID() + "|" + "state" + "|" + Math.round(getPayments()) + "|" + Math.round(getDebt()) + "|");
+            sb.append("FANCY|" + getID() + "|" + getOwner().getID() + "|" + getState().toString() + "|" + Math.round(getPayments()) + "|" + Math.round(getDebt()) + "|");
 
             for (Terminal friend : friends.values()) {
                 sb.append(friend.getID() + ",");

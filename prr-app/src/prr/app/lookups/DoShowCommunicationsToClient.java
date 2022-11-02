@@ -12,11 +12,11 @@ class DoShowCommunicationsToClient extends Command<Network> {
 
 	DoShowCommunicationsToClient(Network receiver) {
 		super(Label.SHOW_COMMUNICATIONS_TO_CLIENT, receiver);
-		//FIXME add command fields
+		addStringField("clientID", Prompt.clientKey());
 	}
 
 	@Override
 	protected final void execute() throws CommandException {
-                //FIXME implement command
+				_display.popup(_receiver.showCommunicationsToClient(stringField("clientID")));
 	}
 }

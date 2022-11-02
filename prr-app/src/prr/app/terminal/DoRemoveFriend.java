@@ -20,7 +20,7 @@ class DoRemoveFriend extends TerminalCommand {
 				try {
 					_receiver.removeFriend(stringField("friendID"));
 				} catch (prr.exceptions.TerminalNotInFriendsException e) {
-					// DO NOTHING
+					throw new prr.app.exceptions.UnknownTerminalKeyException(stringField("friendID"));
 				}
 	}
 }
