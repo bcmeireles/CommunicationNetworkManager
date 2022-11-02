@@ -9,6 +9,11 @@ public class OffState extends TerminalState {
     }
 
     @Override
+    public TerminalState getPreviousState() {
+        return null;
+    }
+
+    @Override
     public void idle() {
         _terminal.setState(new IdleState(_terminal));        
     }

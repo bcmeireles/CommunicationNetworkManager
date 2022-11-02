@@ -8,6 +8,7 @@ import prr.Network;
 
 import prr.clients.Client;
 import prr.communications.Communication;
+import prr.communications.InteractiveCommunication;
 
 import java.lang.Integer;
 
@@ -49,7 +50,7 @@ public abstract class Terminal implements Serializable /* FIXME maybe addd more 
 
         private boolean _isCommunicating = false;
 
-        private Communication _currentCommunication = null;
+        private InteractiveCommunication _currentCommunication = null;
         
         //private Map<Integer, Notification> _notifications = new TreeMap<>();
 
@@ -61,8 +62,13 @@ public abstract class Terminal implements Serializable /* FIXME maybe addd more 
 
         public void setState(TerminalState state) { _state = state; }
 
-        public abstract boolean isFancy();
+        public void setPreviousState() {
+                if (_state.isBusy()) {
+                        _state = _state.getPreviousState();
+                }
+        }
 
+        public abstract boolean isFancy();
 
         /**
          * @param id
@@ -131,6 +137,7 @@ public abstract class Terminal implements Serializable /* FIXME maybe addd more 
         public void addPayment(long payment) {
                 _payments += payment;
                 _balance = _payments - _debt;
+                _owner.addPayment(payment);
         }
 
         public long getPayments() {
@@ -140,6 +147,7 @@ public abstract class Terminal implements Serializable /* FIXME maybe addd more 
         public void addDebt(long debt) {
                 _debt += debt;
                 _balance = _payments - _debt;
+                _owner.addDebt(debt);
         }
 
         public long getDebt() {
@@ -194,15 +202,15 @@ public abstract class Terminal implements Serializable /* FIXME maybe addd more 
                 return _isCommunicating;
         }
 
-        public void changeCommunicating() {
-                _isCommunicating = !_isCommunicating;
+        public void setCommunicating(boolean communicating) {
+                _isCommunicating = communicating;
         }
 
-        public Communication getCurrentCommunication() {
+        public InteractiveCommunication getCurrentCommunication() {
                 return _currentCommunication;
         }
 
-        public void setCurrentCommunication(Communication communication) {
+        public void setCurrentCommunication(InteractiveCommunication communication) {
                 _currentCommunication = communication;
         }
 
@@ -232,9 +240,9 @@ public abstract class Terminal implements Serializable /* FIXME maybe addd more 
         }
 
         public void endCurrentCommunication(String duration) {
-                _currentCommunication.endCommunication();
                 _currentCommunication.setUnits(Integer.parseInt(duration));
                 _currentCommunication.setCost(_currentCommunication.calculateCost());
+                _currentCommunication.endInteractiveCommunication();
         }
 
         public String showCurrentCommunication() throws NoCurrentCommunicationException {

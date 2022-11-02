@@ -9,6 +9,11 @@ public class SilenceState extends TerminalState {
     }
 
     @Override
+    public TerminalState getPreviousState() {
+        return null;
+    }
+
+    @Override
     public void idle() {
         _terminal.setState(new IdleState(_terminal));
         
@@ -17,13 +22,11 @@ public class SilenceState extends TerminalState {
     @Override
     public void silence() {
        // Already silent
-
     }
 
     @Override
     public void busy() {
-        _terminal.setState(new BusyState(_terminal));
-
+        _terminal.setState(new BusyState(_terminal, this));
     }
 
     @Override

@@ -9,6 +9,8 @@ import prr.terminals.Terminal;
 import prr.tariffs.Tariff;
 import prr.tariffs.BaseTariff;
 
+import prr.exceptions.*;
+
 // FIXME add more import if needed (cannot import from pt.tecnico or prr.app)
 
 public class Client implements Serializable {
@@ -28,8 +30,8 @@ public class Client implements Serializable {
     /** Payments made by client */
     private long _payments = 0;
 
-    /** Debts client has */
-    private long _debts = 0;
+    /** Debt client has */
+    private long _debt = 0;
 
     /** Has notifications enabled */
     private boolean _notificationEnabled = true;
@@ -84,12 +86,22 @@ public class Client implements Serializable {
         return _balance;
     }
 
+    public void addPayment(long payment) {
+        _payments += payment;
+        _balance = _payments - _debt;
+    }
+
     public long getPayments() {
         return _payments;
     }
 
-    public long getDebts() {
-        return _debts;
+    public void addDebt(long debt) {
+        _debt += debt;
+        _balance = _payments - _debt;
+    }
+
+    public long getDebt() {
+        return _debt;
     }
 
     public int getTextStreak() {
@@ -110,6 +122,20 @@ public class Client implements Serializable {
 
     public boolean notificatonsEnabled() {
         return _notificationEnabled;
+    }
+
+    public void enableNotifications() throws NotificationsAlreadyEnabledException {
+        if (_notificationEnabled)
+            throw new NotificationsAlreadyEnabledException();
+
+        _notificationEnabled = true;
+    }
+
+    public void disableNotifications() throws NotificationsAlreadyDisabledException {
+        if(!_notificationEnabled)
+            throw new NotificationsAlreadyDisabledException();
+
+        _notificationEnabled = false;
     }
 
     public Integer terminalCount() {
@@ -153,7 +179,7 @@ public class Client implements Serializable {
             toReturn += "0|0|0";
         }
         else {
-            toReturn += terminalCount() + "|" + Math.round(_payments) + "|" + Math.round(_debts);
+            toReturn += terminalCount() + "|" + Math.round(_payments) + "|" + Math.round(_debt);
         }
 
         return toReturn;

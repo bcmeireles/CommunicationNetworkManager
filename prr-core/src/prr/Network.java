@@ -196,6 +196,24 @@ public class Network implements Serializable {
 		return client.toString();
 	}
 
+	public void enableNotifications(String id) throws NotificationsAlreadyEnabledException {
+		Client client = _clients.get(id);
+		try {
+			client.enableNotifications();
+		} catch (NotificationsAlreadyEnabledException e) {
+			throw new NotificationsAlreadyEnabledException();
+		}
+	}
+
+	public void disableNotifications(String id) throws NotificationsAlreadyDisabledException {
+		Client client = _clients.get(id);
+		try {
+			client.disableNotifications();
+		} catch (NotificationsAlreadyDisabledException e) {
+			throw new NotificationsAlreadyDisabledException();
+		}
+	}
+
 	public String getAllClients() {
 		if (_clients.isEmpty()) {
 			return "";
@@ -247,6 +265,10 @@ public class Network implements Serializable {
 	public TextCommunication startTextCommunication(Terminal origin, Terminal destination, String text) throws DestinationOffException {
 		int id = _communications.size() + 1;
 
+		if (destination.getState().isOff()) {
+			throw new DestinationOffException();
+		}
+
 		TextCommunication textCom = new TextCommunication(id, origin, destination, text);
 		
 		long cost = textCom.calculateCost();
@@ -260,19 +282,25 @@ public class Network implements Serializable {
 		return textCom;
 	}
 
-	public InteractiveCommunication startInteractiveCommunication(String type, Terminal origin, Terminal destination) throws CommunicationUnsupportedAtOriginException, CommunicationUnsupportedAtDestinationException, DestinationOffException, DestinationBusyException, DestinationSilenceException {
-		System.out.println("Starting interactive communication");
-		System.out.println(type);
-		
+	public InteractiveCommunication startInteractiveCommunication(String type, Terminal origin, Terminal destination) throws CommunicationUnsupportedAtOriginException, CommunicationUnsupportedAtDestinationException, DestinationOffException, DestinationBusyException, DestinationSilenceException {		
 		int id = _communications.size() + 1;
+
+		if (destination.getState().isBusy()) {
+			throw new DestinationBusyException();
+		}
+
+		if (destination.getState().isOff()) {
+			throw new DestinationOffException();
+		}
+
+		if (destination.getState().isSilence()) {
+			throw new DestinationSilenceException();
+		}
 
 		InteractiveCommunication newCom = null;
 
-
-
 		if (type.equals("VOICE")) {
 			newCom = new VoiceCommunication(id, origin, destination);
-			System.out.println("Voice communication started");
 		}
 
 		if (type.equals("VIDEO")) {
@@ -285,19 +313,9 @@ public class Network implements Serializable {
 			newCom = new VideoCommunication(id, origin, destination);
 		}
 
-		if (destination.getState().isOff())
-			throw new DestinationOffException();
-
-		if (destination.getState().isBusy())
-			throw new DestinationBusyException();
-
-		if (destination.getState().isSilence())
-			throw new DestinationSilenceException();
+		newCom.startInteractiveCommunication();
 
 		_communications.put(id, newCom);
-
-		// AQUI
-		origin.setCurrentCommunication(newCom);
 
 		setChanged(true);
 

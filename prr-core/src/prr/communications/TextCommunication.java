@@ -10,7 +10,6 @@ public class TextCommunication extends Communication {
     public TextCommunication(int id, Terminal origin, Terminal destination, String text) {
         super(id, origin, destination);
         _text = text;
-        this.endCommunication();
     }
 
     public String getText() {

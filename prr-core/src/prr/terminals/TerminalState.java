@@ -9,6 +9,8 @@ public abstract class TerminalState implements Serializable {
     /** @param terminal is the terminal */
     public TerminalState(Terminal terminal) { _terminal = terminal; }
 
+    public abstract TerminalState getPreviousState();
+
     /** Behaviour for idling */
     public abstract void idle();
 

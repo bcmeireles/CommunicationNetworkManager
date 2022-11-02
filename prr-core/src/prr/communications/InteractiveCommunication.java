@@ -6,11 +6,32 @@ public abstract class InteractiveCommunication extends Communication {
     
     public InteractiveCommunication(int id, Terminal origin, Terminal destination) {
         super(id, origin, destination);
-        this.startCommunication();
+        this.startInteractiveCommunication();
     }
 
     public void setDuration(int duration) {
         setUnits(duration);
+    }
+
+    public void startInteractiveCommunication() {
+        setOnGoing(true);
+        getOrigin().setCommunicating(true);
+        getOrigin().setCurrentCommunication(this);
+        getDestination().setCommunicating(true);
+        getDestination().setCurrentCommunication(this);
+        getOrigin().busy();
+        getDestination().busy();        
+    }
+
+    public void endInteractiveCommunication() {
+        setOnGoing(false);
+        getOrigin().setCommunicating(false);
+        getOrigin().setCurrentCommunication(null);
+        getDestination().setCommunicating(false);
+        getDestination().setCurrentCommunication(null);
+        getOrigin().addDebt(getCost());
+        getOrigin().setPreviousState();
+        getDestination().setPreviousState();
     }
 
     @Override

@@ -4,8 +4,21 @@ import prr.terminals.Terminal;
 import prr.terminals.TerminalState;
 
 public class BusyState extends TerminalState {
+
+    private TerminalState _previousState = null;
+
     public BusyState(Terminal terminal) {
         super(terminal);
+    }
+
+    public BusyState(Terminal terminal, TerminalState previous) {
+        super(terminal);
+        _previousState = previous;
+    }
+
+    @Override
+    public TerminalState getPreviousState() {
+        return _previousState;
     }
 
     @Override
@@ -29,7 +42,6 @@ public class BusyState extends TerminalState {
     @Override
     public void off() {
         // Not possible
-
     }
 
     @Override

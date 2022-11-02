@@ -10,6 +10,11 @@ public class IdleState extends TerminalState {
     }
 
     @Override
+    public TerminalState getPreviousState() {
+        return null;
+    }
+
+    @Override
     public void idle() {
         // Already idle
         
@@ -23,7 +28,7 @@ public class IdleState extends TerminalState {
 
     @Override
     public void busy() {
-        _terminal.setState(new BusyState(_terminal));
+        _terminal.setState(new BusyState(_terminal, this));
 
     }
 

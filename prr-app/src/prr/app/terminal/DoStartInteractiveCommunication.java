@@ -37,7 +37,6 @@ class DoStartInteractiveCommunication extends TerminalCommand {
 					_display.popup(Message.destinationIsSilent(stringField("destinationID")));
 				} catch (prr.exceptions.UnknownTerminalKeyException e) {
 					// DO NOTHING
-					System.out.println("UnknownTerminalKeyException");
 				}
 	}
 }

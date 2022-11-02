@@ -22,7 +22,7 @@ public abstract class Communication implements Serializable {
     private int _units = 0;
 
     /** Friendship status between origin and destination */
-    private boolean _friendshipStatus;
+    private boolean _friendshipStatus = false;
 
     private boolean _onGoing = false;
 
@@ -49,7 +49,11 @@ public abstract class Communication implements Serializable {
     }
 
     public void setCost(long cost) {
-        _cost = cost;
+        if (getFriendshipStatus()) {
+            _cost = Math.round(cost / 2);
+        } else {
+            _cost = cost;
+        }
     }
 
     public int getUnits() {
@@ -72,13 +76,10 @@ public abstract class Communication implements Serializable {
         return _onGoing;
     }
 
-    public void startCommunication() {
-        _onGoing = true;
+    public void setOnGoing(boolean onGoing) {
+        _onGoing = onGoing;
     }
-
-    public void endCommunication() {
-        _onGoing = false;
-    }
+    
 
     public abstract long calculateCost();
     public abstract long calculateCost(int duration);
