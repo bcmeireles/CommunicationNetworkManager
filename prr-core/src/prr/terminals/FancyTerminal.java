@@ -15,10 +15,6 @@ public class FancyTerminal extends BasicTerminal {
         super(id, owner, state);
     }
 
-    public void startVideoCommunication(int receiverID){
-        // TODO
-    }
-
     @Override
     public boolean isFancy(){
         return true;

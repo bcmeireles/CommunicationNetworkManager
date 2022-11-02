@@ -17,5 +17,11 @@ class DoShowOngoingCommunication extends TerminalCommand {
 	@Override
 	protected final void execute() throws CommandException {
                 //FIXME implement command
+				try {
+					_display.popup(_receiver.showCurrentCommunication());
+				} catch (prr.exceptions.NoCurrentCommunicationException e) {
+					_display.popup(Message.noOngoingCommunication());
+				}
+				
 	}
 }

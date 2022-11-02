@@ -3,31 +3,31 @@ package prr.tariffs;
 import java.io.Serializable;
 
 public abstract class Tariff implements Serializable {
-    private double _smallTextCostNormal;
-    private double _smallTextCostGold;
-    private double _smallTextCostPlatinum;
+    private long _smallTextCostNormal;
+    private long _smallTextCostGold;
+    private long _smallTextCostPlatinum;
 
-    private double _mediumTextCostNormal;
-    private double _mediumTextCostGold;
-    private double _mediumTextCostPlatinum;
+    private long _mediumTextCostNormal;
+    private long _mediumTextCostGold;
+    private long _mediumTextCostPlatinum;
 
-    private double _largeTextCostNormal;
-    private double _largeTextCostGold;
-    private double _largeTextCostPlatinum;
+    private long _largeTextCostNormal;
+    private long _largeTextCostGold;
+    private long _largeTextCostPlatinum;
 
-    private double _voiceCostNormal;
-    private double _voiceCostGold;
-    private double _voiceCostPlatinum;
+    private long _voiceCostNormal;
+    private long _voiceCostGold;
+    private long _voiceCostPlatinum;
 
-    private double _videoCostNormal;
-    private double _videoCostGold;
-    private double _videoCostPlatinum;
+    private long _videoCostNormal;
+    private long _videoCostGold;
+    private long _videoCostPlatinum;
 
-    public Tariff(double smallTextCostNormal, double smallTextCostGold, double smallTextCostPlatinum,
-            double mediumTextCostNormal, double mediumTextCostGold, double mediumTextCostPlatinum,
-            double largeTextCostNormal, double largeTextCostGold, double largeTextCostPlatinum,
-            double voiceCostNormal, double voiceCostGold, double voiceCostPlatinum,
-            double videoCostNormal, double videoCostGold, double videoCostPlatinum) {
+    public Tariff(long smallTextCostNormal, long smallTextCostGold, long smallTextCostPlatinum,
+                    long mediumTextCostNormal, long mediumTextCostGold, long mediumTextCostPlatinum,
+                    long largeTextCostNormal, long largeTextCostGold, long largeTextCostPlatinum,
+                    long voiceCostNormal, long voiceCostGold, long voiceCostPlatinum,
+                    long videoCostNormal, long videoCostGold, long videoCostPlatinum) {
                 
         _smallTextCostNormal = smallTextCostNormal;
         _smallTextCostGold = smallTextCostGold;
@@ -50,7 +50,7 @@ public abstract class Tariff implements Serializable {
         _videoCostPlatinum = videoCostPlatinum;
     }
     
-    public double getTextCostNormal(int duration) {
+    public long getTextCostNormal(int duration) {
         if (duration < 50)
             return _smallTextCostNormal;
 
@@ -60,10 +60,10 @@ public abstract class Tariff implements Serializable {
         if (duration >= 100)
             return _largeTextCostNormal * duration;
 
-        return 0.0;
+        return 0;
     }
     
-    public double getTextCostGold(int duration) {
+    public long getTextCostGold(int duration) {
         if (duration < 50)
             return _smallTextCostGold;
 
@@ -73,10 +73,10 @@ public abstract class Tariff implements Serializable {
         if (duration >= 100)
             return _largeTextCostGold * duration;
 
-        return 0.0;
+        return 0;
     }
 
-    public double getTextCostPlatinum(int duration) {
+    public long getTextCostPlatinum(int duration) {
         if (duration < 50)
             return _smallTextCostPlatinum;
 
@@ -86,30 +86,30 @@ public abstract class Tariff implements Serializable {
         if (duration >= 100)
             return _largeTextCostPlatinum;
             
-        return 0.0;
+        return 0;
     }
 
-    public double getVoiceCostNormal(int duration) {
+    public long getVoiceCostNormal(int duration) {
         return _voiceCostNormal * duration;
     }
 
-    public double getVoiceCostGold(int duration) {
+    public long getVoiceCostGold(int duration) {
         return _voiceCostGold * duration;
     }
 
-    public double getVoiceCostPlatinum(int duration) {
+    public long getVoiceCostPlatinum(int duration) {
         return _voiceCostPlatinum * duration;
     }
 
-    public double getVideoCostNormal(int duration) {
+    public long getVideoCostNormal(int duration) {
         return _videoCostNormal * duration;
     }
 
-    public double getVideoCostGold(int duration) {
+    public long getVideoCostGold(int duration) {
         return _videoCostGold * duration;
     }
 
-    public double getVideoCostPlatinum(int duration) {
+    public long getVideoCostPlatinum(int duration) {
         return _videoCostPlatinum * duration;
     }
 }

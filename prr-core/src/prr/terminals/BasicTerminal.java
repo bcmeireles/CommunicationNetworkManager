@@ -14,6 +14,7 @@ public class BasicTerminal extends Terminal {
         super(id, owner, state);
     }
 
+    @Override
     public boolean isFancy(){
         return false;
     }

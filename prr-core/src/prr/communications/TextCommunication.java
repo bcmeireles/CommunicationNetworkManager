@@ -10,6 +10,7 @@ public class TextCommunication extends Communication {
     public TextCommunication(int id, Terminal origin, Terminal destination, String text) {
         super(id, origin, destination);
         _text = text;
+        this.endCommunication();
     }
 
     public String getText() {
@@ -21,10 +22,19 @@ public class TextCommunication extends Communication {
         setUnits(text.length());
     }
     
-    public double calculateCost() {
+    @Override
+    public long calculateCost() {
         return getOrigin().getOwner().getLevel().getTextCost(getUnits());               
     }
 
+    @Override
+    public long calculateCost(int units) {
+        return getOrigin().getOwner().getLevel().getTextCost(units);               
+    }
 
+    @Override
+    public String toString() {
+        return "TEXT|" + getID() + "|" + getOrigin().getID() + "|" + getDestination().getID() + "|" + getUnits() + "|" + getCost() + "|" + "FINISHED";
+    }
 
 }

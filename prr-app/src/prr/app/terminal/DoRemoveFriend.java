@@ -12,11 +12,15 @@ class DoRemoveFriend extends TerminalCommand {
 
 	DoRemoveFriend(Network context, Terminal terminal) {
 		super(Label.REMOVE_FRIEND, context, terminal);
-		//FIXME add command fields
+		addStringField("friendID", Prompt.terminalKey());
 	}
 
 	@Override
 	protected final void execute() throws CommandException {
-                //FIXME implement command
+				try {
+					_receiver.removeFriend(stringField("friendID"));
+				} catch (prr.exceptions.TerminalNotInFriendsException e) {
+					// DO NOTHING
+				}
 	}
 }

@@ -14,4 +14,9 @@ public class VideoCommunication extends InteractiveCommunication {
     public boolean isVoiceCommunication() {
         return false;
     }
+
+    @Override
+    public String toString() {
+        return "VIDEO|" + getID() + "|" + getOrigin().getID() + "|" + getDestination().getID() + "|" + getUnits() + "|" + getCost() + "|" + (isOnGoing() ? "ONGOING" : "FINISHED");
+    }
 }

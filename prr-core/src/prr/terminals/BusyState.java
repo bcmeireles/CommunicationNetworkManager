@@ -33,6 +33,11 @@ public class BusyState extends TerminalState {
     }
 
     @Override
+    public boolean isSilence() {
+        return false;
+    }
+
+    @Override
     public boolean isBusy() {
         return true;
     }

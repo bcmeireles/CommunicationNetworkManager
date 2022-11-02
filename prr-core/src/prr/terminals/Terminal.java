@@ -4,8 +4,14 @@ import java.io.Serializable;
 import java.util.Map;
 import java.util.TreeMap;
 
+import prr.Network;
+
 import prr.clients.Client;
 import prr.communications.Communication;
+
+import java.lang.Integer;
+
+import prr.exceptions.*;
 
 // FIXME add more import if needed (cannot import from pt.tecnico or prr.app)
 
@@ -24,10 +30,13 @@ public abstract class Terminal implements Serializable /* FIXME maybe addd more 
         private String _id;
         
         /** payments made by Terminal*/
-        private double _payments = 0.0;
+        private long _payments = 0;
 
         /** Terminal debt */
-        private double _debt = 0.0;
+        private long _debt = 0;
+
+        /** Terminal balance */
+        private long _balance = 0;
 
         /** Terminal owner */
         private Client _owner;
@@ -51,6 +60,8 @@ public abstract class Terminal implements Serializable /* FIXME maybe addd more 
         public void off() { _state.off(); }
 
         public void setState(TerminalState state) { _state = state; }
+
+        public abstract boolean isFancy();
 
 
         /**
@@ -117,11 +128,21 @@ public abstract class Terminal implements Serializable /* FIXME maybe addd more 
                 return _owner;
         }
 
-        public double getPayments() {
+        public void addPayment(long payment) {
+                _payments += payment;
+                _balance = _payments - _debt;
+        }
+
+        public long getPayments() {
                 return _payments;
         }
 
-        public double getDebt() {
+        public void addDebt(long debt) {
+                _debt += debt;
+                _balance = _payments - _debt;
+        }
+
+        public long getDebt() {
                 return _debt;
         }
 
@@ -131,6 +152,26 @@ public abstract class Terminal implements Serializable /* FIXME maybe addd more 
 
         public void addFriend(Terminal friend) {
                 _friends.put(friend.getID(), friend);
+        }
+
+        public void addFriend(String friendID, Network network) throws UnknownTerminalKeyException{
+                try {
+                        _friends.put(friendID, network.getTerminal(friendID));
+                } catch (UnknownTerminalKeyException e) {
+                        throw new UnknownTerminalKeyException(friendID);
+                }
+        }
+
+        public void removeFriend(Terminal friend) {
+                _friends.remove(friend.getID());
+        }
+
+        public void removeFriend(String friendID) throws TerminalNotInFriendsException {
+                try {
+                        _friends.remove(friendID);
+                } catch (ClassCastException e) {
+                        throw new TerminalNotInFriendsException();
+                }
         }
 
         public boolean isFriend(Terminal friend) {
@@ -164,4 +205,42 @@ public abstract class Terminal implements Serializable /* FIXME maybe addd more 
         public void setCurrentCommunication(Communication communication) {
                 _currentCommunication = communication;
         }
+
+        public long calculateCommunicationCost(String units) {
+                return _currentCommunication.calculateCost(Integer.parseInt(units));
+        }
+
+        public void startTextCommunication(String destinationID, String message, Network network) throws UnknownTerminalKeyException, DestinationOffException {
+                try {
+                        network.startTextCommunication(this, network.getTerminal(destinationID), message);
+                } catch (UnknownTerminalKeyException e) {
+                        // DO NOTHING
+                } catch (DestinationOffException e) {
+                        throw e;
+                }
+                
+        }
+
+        public void startInteractiveCommunication(String destinationID, String type, Network network) throws UnknownTerminalKeyException, CommunicationUnsupportedAtOriginException, CommunicationUnsupportedAtDestinationException, DestinationOffException, DestinationBusyException, DestinationSilenceException {
+                try {
+                        network.startInteractiveCommunication(type, this, network.getTerminal(destinationID));
+                } catch (UnknownTerminalKeyException e) {
+                        // DO NOTHING
+                } catch (CommunicationUnsupportedAtOriginException | CommunicationUnsupportedAtDestinationException | DestinationOffException | DestinationBusyException | DestinationSilenceException e) {
+                        throw e;
+                }
+        }
+
+        public void endCurrentCommunication(String duration) {
+                _currentCommunication.endCommunication();
+                _currentCommunication.setUnits(Integer.parseInt(duration));
+                _currentCommunication.setCost(_currentCommunication.calculateCost());
+        }
+
+        public String showCurrentCommunication() throws NoCurrentCommunicationException {
+                if (!_isCommunicating)
+                        throw new NoCurrentCommunicationException();
+                return _currentCommunication.toString();
+        }
+
 }

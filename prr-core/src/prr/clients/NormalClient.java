@@ -22,15 +22,15 @@ public class NormalClient extends ClientLevel {
         // Not possible
     }
 
-    public double getTextCost(int length) {
+    public long getTextCost(int length) {
         return _client.getTariff().getTextCostNormal(length);
     }
 
-    public double getVoiceCost(int duration) {
+    public long getVoiceCost(int duration) {
         return _client.getTariff().getVoiceCostNormal(duration);
     }
 
-    public double getVideoCost(int duration) {
+    public long getVideoCost(int duration) {
         return _client.getTariff().getVideoCostNormal(duration);
     }
 

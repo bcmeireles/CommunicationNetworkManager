@@ -11,7 +11,7 @@ public abstract class ClientLevel implements Serializable {
     public abstract void gold();
     public abstract void platinum();
 
-    public abstract double getTextCost(int length);
-    public abstract double getVoiceCost(int duration);
-    public abstract double getVideoCost(int duration);
+    public abstract long getTextCost(int length);
+    public abstract long getVoiceCost(int duration);
+    public abstract long getVideoCost(int duration);
 }

@@ -25,15 +25,15 @@ public class PlatinumClient extends ClientLevel {
         // Client is already platinum
     }
 
-    public double getTextCost(int length) {
+    public long getTextCost(int length) {
         return _client.getTariff().getTextCostPlatinum(length);
     }
 
-    public double getVoiceCost(int duration) {
+    public long getVoiceCost(int duration) {
         return _client.getTariff().getVoiceCostPlatinum(duration);
     }
 
-    public double getVideoCost(int duration) {
+    public long getVideoCost(int duration) {
         return _client.getTariff().getVideoCostPlatinum(duration);
     }
 

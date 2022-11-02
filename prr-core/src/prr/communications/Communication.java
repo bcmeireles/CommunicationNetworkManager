@@ -16,7 +16,7 @@ public abstract class Communication implements Serializable {
     private Terminal _destination;
 
     /** Communication cost */
-    private double _cost = 0.0;
+    private long _cost = 0;
 
     /** Message length for Text Communications and duration for Voice/Video */
     private int _units = 0;
@@ -24,13 +24,15 @@ public abstract class Communication implements Serializable {
     /** Friendship status between origin and destination */
     private boolean _friendshipStatus;
 
+    private boolean _onGoing = false;
+
     public Communication(int id, Terminal origin, Terminal destination) {
         _id = id;
         _origin = origin;
         _destination = destination;
     }
 
-    public int getId() {
+    public int getID() {
         return _id;
     }
 
@@ -42,11 +44,11 @@ public abstract class Communication implements Serializable {
         return _destination;
     }
 
-    public double getCost() {
+    public long getCost() {
         return _cost;
     }
 
-    public void setCost(double cost) {
+    public void setCost(long cost) {
         _cost = cost;
     }
 
@@ -57,5 +59,28 @@ public abstract class Communication implements Serializable {
     public void setUnits(int units) {
         _units = units;
     }
+
+    public void setFriendshipStatus(boolean friendshipStatus) {
+        _friendshipStatus = friendshipStatus;
+    }
+
+    public boolean getFriendshipStatus() {
+        return _friendshipStatus;
+    }
+
+    public boolean isOnGoing() {
+        return _onGoing;
+    }
+
+    public void startCommunication() {
+        _onGoing = true;
+    }
+
+    public void endCommunication() {
+        _onGoing = false;
+    }
+
+    public abstract long calculateCost();
+    public abstract long calculateCost(int duration);
 
 }

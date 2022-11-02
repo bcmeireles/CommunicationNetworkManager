@@ -243,18 +243,15 @@ public class Network implements Serializable {
 		return sb.toString();
 
 	}
-
-	public TextCommunication sendTextCommunication(Terminal origin, Terminal destination, String text) {
+	
+	public TextCommunication startTextCommunication(Terminal origin, Terminal destination, String text) throws DestinationOffException {
 		int id = _communications.size() + 1;
 
 		TextCommunication textCom = new TextCommunication(id, origin, destination, text);
 		
-		double cost = textCom.calculateCost();
-		
-		if (origin.isFriend(destination)) {
-			cost = cost * 0.5;
-			textCom.setCost(cost);
-		}
+		long cost = textCom.calculateCost();
+		textCom.setCost(cost);
+		origin.addDebt(cost);
 
 		_communications.put(id, textCom);
 		
@@ -263,34 +260,52 @@ public class Network implements Serializable {
 		return textCom;
 	}
 
-	public InteractiveCommunication startInteractiveCommunication(String type, Terminal origin, Terminal destination) {
+	public InteractiveCommunication startInteractiveCommunication(String type, Terminal origin, Terminal destination) throws CommunicationUnsupportedAtOriginException, CommunicationUnsupportedAtDestinationException, DestinationOffException, DestinationBusyException, DestinationSilenceException {
+		System.out.println("Starting interactive communication");
+		System.out.println(type);
+		
 		int id = _communications.size() + 1;
 
-		InteractiveCommunication newCom;
+		InteractiveCommunication newCom = null;
 
-		switch (type) {
-			case "VOICE" -> newCom = new VoiceCommunication(id, origin, destination);
-			case "VIDEO" -> newCom = new VideoCommunication(id, origin, destination);
-			default -> throw new IllegalArgumentException(/** placeholder */);
+
+
+		if (type.equals("VOICE")) {
+			newCom = new VoiceCommunication(id, origin, destination);
+			System.out.println("Voice communication started");
 		}
 
-		double cost = newCom.calculateCost();
+		if (type.equals("VIDEO")) {
 
-		if (origin.isFriend(destination)) {
-			cost = cost * 0.5;
-			newCom.setCost(cost);
+			if (!origin.isFancy())
+				throw new CommunicationUnsupportedAtOriginException();
+			if (!destination.isFancy())
+				throw new CommunicationUnsupportedAtDestinationException();
+
+			newCom = new VideoCommunication(id, origin, destination);
 		}
+
+		if (destination.getState().isOff())
+			throw new DestinationOffException();
+
+		if (destination.getState().isBusy())
+			throw new DestinationBusyException();
+
+		if (destination.getState().isSilence())
+			throw new DestinationSilenceException();
 
 		_communications.put(id, newCom);
+
+		// AQUI
+		origin.setCurrentCommunication(newCom);
 
 		setChanged(true);
 
 		return newCom;
 	}
 
-	public void endInteractiveCommunication(InteractiveCommunication com) {
-		com.end();
-		setChanged(true);
+	public long getCommunicationCost(Integer communicationID) {
+		return _communications.get(communicationID).getCost();
 	}
 
 	/** 
@@ -317,6 +332,21 @@ public class Network implements Serializable {
 	* }
 	* 
 	*/
+
+	//public void addFriend(Terminal friender, String friendID) {
+	//	Terminal friend = _terminals.get(friendID);
+//
+	//	friender.addFriend(friend);
+	//	setChanged(true);
+	//}
+
+	public void removeFriend(String frienderID, String friendID) {
+		Terminal friender = _terminals.get(frienderID);
+		Terminal friend = _terminals.get(friendID);
+
+		friender.removeFriend(friend);
+		setChanged(true);
+	}
 
 	public void setChanged(boolean changed) {
 		_changed = changed;

@@ -23,13 +23,13 @@ public class Client implements Serializable {
     private String _name;
 
     /** Client balance */
-    private double _balance = 0.0;
+    private long _balance = 0;
 
     /** Payments made by client */
-    private double _payments = 0.0;
+    private long _payments = 0;
 
     /** Debts client has */
-    private double _debts = 0.0;
+    private long _debts = 0;
 
     /** Has notifications enabled */
     private boolean _notificationEnabled = true;
@@ -80,15 +80,15 @@ public class Client implements Serializable {
         return _name;
     }
 
-    public double getBalance() {
+    public long getBalance() {
         return _balance;
     }
 
-    public double getPayments() {
+    public long getPayments() {
         return _payments;
     }
 
-    public double getDebts() {
+    public long getDebts() {
         return _debts;
     }
 

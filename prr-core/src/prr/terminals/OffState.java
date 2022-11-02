@@ -29,6 +29,11 @@ public class OffState extends TerminalState {
     }
 
     @Override
+    public boolean isSilence() {
+        return false;
+    }
+
+    @Override
     public boolean isBusy() {
         return false;
     }
