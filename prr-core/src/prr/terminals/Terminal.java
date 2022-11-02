@@ -221,20 +221,15 @@ public abstract class Terminal implements Serializable /* FIXME maybe addd more 
         public void startTextCommunication(String destinationID, String message, Network network) throws UnknownTerminalKeyException, DestinationOffException {
                 try {
                         network.startTextCommunication(this, network.getTerminal(destinationID), message);
-                } catch (UnknownTerminalKeyException e) {
-                        // DO NOTHING
-                } catch (DestinationOffException e) {
+                } catch (UnknownTerminalKeyException | DestinationOffException e) {
                         throw e;
                 }
-                
         }
 
         public void startInteractiveCommunication(String destinationID, String type, Network network) throws UnknownTerminalKeyException, CommunicationUnsupportedAtOriginException, CommunicationUnsupportedAtDestinationException, DestinationOffException, DestinationBusyException, DestinationSilenceException {
                 try {
                         network.startInteractiveCommunication(type, this, network.getTerminal(destinationID));
-                } catch (UnknownTerminalKeyException e) {
-                        // DO NOTHING
-                } catch (CommunicationUnsupportedAtOriginException | CommunicationUnsupportedAtDestinationException | DestinationOffException | DestinationBusyException | DestinationSilenceException e) {
+                } catch (UnknownTerminalKeyException | CommunicationUnsupportedAtOriginException | CommunicationUnsupportedAtDestinationException | DestinationOffException | DestinationBusyException | DestinationSilenceException e) {
                         throw e;
                 }
         }

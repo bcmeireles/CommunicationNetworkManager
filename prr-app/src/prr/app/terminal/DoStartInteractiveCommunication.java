@@ -36,7 +36,7 @@ class DoStartInteractiveCommunication extends TerminalCommand {
 				} catch (prr.exceptions.DestinationSilenceException e) {
 					_display.popup(Message.destinationIsSilent(stringField("destinationID")));
 				} catch (prr.exceptions.UnknownTerminalKeyException e) {
-					// DO NOTHING
+					throw new UnknownTerminalKeyException(stringField("destinationID"));
 				}
 	}
 }

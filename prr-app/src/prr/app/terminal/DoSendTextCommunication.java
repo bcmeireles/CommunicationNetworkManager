@@ -29,7 +29,7 @@ class DoSendTextCommunication extends TerminalCommand {
                 } catch (prr.exceptions.DestinationOffException e) {
                         _display.popup(Message.destinationIsOff(stringField("destinationID")));
                 } catch (prr.exceptions.UnknownTerminalKeyException e) {
-                        // DO NOTHING
+                        throw new UnknownTerminalKeyException(stringField("destinationID"));
                 }
         }
 }
