@@ -61,6 +61,8 @@ public abstract class Terminal implements Serializable /* FIXME maybe addd more 
 
         // private ArrayList<Notification> _pendingNotifications = new ArrayList<Notification>();
 
+        
+
 
         public void idle() { _state.idle(); }
         public void silence() { _state.silence(); }
@@ -97,6 +99,8 @@ public abstract class Terminal implements Serializable /* FIXME maybe addd more 
                 _id = id;
                 _owner = owner;
         }
+
+        
 
         // FIXME define attributes
         // FIXME define contructor(s)
@@ -236,6 +240,9 @@ public abstract class Terminal implements Serializable /* FIXME maybe addd more 
                 } catch (UnknownTerminalKeyException e) {
                         throw e;
                 } catch (DestinationOffException e) {
+                        if (!_owner.notificatonsEnabled())
+                                throw e;
+
                         ArrayList<String> communicationAttempts = _owner.getCommunicationAttempts();
 
                         if (!communicationAttempts.contains(destinationID)) {
@@ -256,6 +263,9 @@ public abstract class Terminal implements Serializable /* FIXME maybe addd more 
                 } catch (UnknownTerminalKeyException | CommunicationUnsupportedAtOriginException | CommunicationUnsupportedAtDestinationException e) {
                         throw e;
                 } catch (DestinationOffException e) {
+                        if (!_owner.notificatonsEnabled())
+                                throw e;
+
                         ArrayList<String> communicationAttempts = _owner.getCommunicationAttempts();
                         
                         if (!communicationAttempts.contains(destinationID)) {
@@ -266,6 +276,9 @@ public abstract class Terminal implements Serializable /* FIXME maybe addd more 
                         throw e;
 
                 } catch (DestinationBusyException e) {
+                        if (!_owner.notificatonsEnabled())
+                                throw e;
+
                         ArrayList<String> communicationAttempts = _owner.getCommunicationAttempts();
                         
                         if (!communicationAttempts.contains(destinationID)) {
@@ -276,6 +289,9 @@ public abstract class Terminal implements Serializable /* FIXME maybe addd more 
                         throw e;
 
                 } catch (DestinationSilenceException e) {
+                        if (!_owner.notificatonsEnabled())
+                                throw e;
+
                         ArrayList<String> communicationAttempts = _owner.getCommunicationAttempts();
                         
                         if (!communicationAttempts.contains(destinationID)) {

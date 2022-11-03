@@ -17,13 +17,3 @@ public abstract class Notification implements Serializable {
     }
 
 }
-
-/**
-    * cli001 owns 969001
-    * cli003 owns 969008
-    * 
-    * 969001 tenta ligar ao 969008
-    * 969008 está off
-    * liga 969008
-    * cli001 tem O2I|969008
- */

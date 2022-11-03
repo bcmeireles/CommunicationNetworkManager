@@ -16,6 +16,8 @@ import prr.notifications.Notification;
 
 import prr.exceptions.*;
 
+import prr.communications.DeliveryProcess;
+
 // FIXME add more import if needed (cannot import from pt.tecnico or prr.app)
 
 
@@ -60,6 +62,8 @@ public class Client implements Serializable {
 
     private ArrayList<String> _communicationAttempts = new ArrayList<String>();
 
+    private DeliveryProcess _deliveryProcess = new Default();
+
     /**
      * @param id
      * @param taxID
@@ -70,6 +74,17 @@ public class Client implements Serializable {
         _id = id;
         _taxID = taxID;
         _name = name;
+    }
+
+
+    public class Default implements DeliveryProcess {
+        public void deliver(Notification notification) {
+            _notifications.add(notification);
+        }
+    }
+
+    public DeliveryProcess getProcess() {
+        return _deliveryProcess;
     }
 
     /** Getters */
@@ -176,10 +191,6 @@ public class Client implements Serializable {
 
     public Tariff getTariff() {
         return _tariff;
-    }
-
-    public void addNotification(Notification notification) {
-        _notifications.add(notification);
     }
 
     public void resetNotifications() {

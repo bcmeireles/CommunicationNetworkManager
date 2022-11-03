@@ -534,7 +534,7 @@ public class Network implements Serializable {
 				Client client = t.getOwner();
 
 					OffToIdleNotification notification = new OffToIdleNotification(terminal);
-					client.addNotification(notification);
+					client.getProcess().deliver(notification);
 			}
 
 		}
@@ -546,7 +546,7 @@ public class Network implements Serializable {
 				Client client = t.getOwner();
 
 					BusyToIdleNotification notification = new BusyToIdleNotification(terminal);
-					client.addNotification(notification);
+					client.getProcess().deliver(notification);
 			}
 
 		}
@@ -558,7 +558,7 @@ public class Network implements Serializable {
 				Client client = t.getOwner();
 
 					SilentToIdleNotification notification = new SilentToIdleNotification(terminal);
-					client.addNotification(notification);
+					client.getProcess().deliver(notification);
 			}
 
 		}
@@ -591,7 +591,7 @@ public class Network implements Serializable {
 				Client client = t.getOwner();
 
 					OffToSilentNotification notification = new OffToSilentNotification(terminal);
-					client.addNotification(notification);
+					client.getProcess().deliver(notification);
 			}
 
 		}
