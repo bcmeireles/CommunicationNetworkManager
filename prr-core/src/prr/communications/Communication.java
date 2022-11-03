@@ -26,6 +26,8 @@ public abstract class Communication implements Serializable {
 
     private boolean _onGoing = false;
 
+    public boolean _isPaid = false;
+
     public Communication(int id, Terminal origin, Terminal destination) {
         _id = id;
         _origin = origin;
@@ -80,6 +82,13 @@ public abstract class Communication implements Serializable {
         _onGoing = onGoing;
     }
     
+    public boolean isPaid() {
+        return _isPaid;
+    }
+
+    public void markPaid() {
+        _isPaid = true;
+    }
 
     public abstract long calculateCost();
     public abstract long calculateCost(int duration);

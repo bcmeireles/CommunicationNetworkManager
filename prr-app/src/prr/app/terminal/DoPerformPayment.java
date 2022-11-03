@@ -20,7 +20,7 @@ class DoPerformPayment extends TerminalCommand {
 	protected final void execute() throws CommandException {
                 try {
 					_receiver.doPayment(stringField("commID"), _network);
-				} catch (prr.exceptions.InvalidCommunicationKeyException | prr.exceptions.ClientNotCommunicationOwnerException e) {
+				} catch (prr.exceptions.InvalidCommunicationKeyException | prr.exceptions.ClientNotCommunicationOwnerException | prr.exceptions.CommunicationAlreadyPaidException e) {
 					_display.popup(Message.invalidCommunication());
 				}
 	}

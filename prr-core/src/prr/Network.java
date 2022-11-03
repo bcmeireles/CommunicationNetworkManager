@@ -466,16 +466,23 @@ public class Network implements Serializable {
 		return sb.toString();
 	}
 
-	public void doPayment(Terminal terminal, String commID) throws InvalidCommunicationKeyException, ClientNotCommunicationOwnerException {
+	public void doPayment(Terminal terminal, String commID) throws InvalidCommunicationKeyException, ClientNotCommunicationOwnerException, CommunicationAlreadyPaidException {
 		if (!_communications.containsKey(commID)) {
 			throw new InvalidCommunicationKeyException();
 		}
+
 		Communication communication = _communications.get(commID);
+
 		if (!communication.getDestination().getOwner().equals(terminal.getOwner())) {
 			throw new ClientNotCommunicationOwnerException();
 		}
 
+		if (communication.isPaid()) {
+			throw new CommunicationAlreadyPaidException();
+		}
+
 		terminal.addPayment(communication.getCost());
+		communication.markPaid();
 		setChanged(true);
 	}
 
