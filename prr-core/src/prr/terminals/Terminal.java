@@ -54,6 +54,10 @@ public abstract class Terminal implements Serializable /* FIXME maybe addd more 
         
         //private Map<Integer, Notification> _notifications = new TreeMap<>();
 
+        private ArrayList<Terminal> _communicationAttempts = new ArrayList<Terminal>();
+
+        // private ArrayList<Notification> _pendingNotifications = new ArrayList<Notification>();
+
 
         public void idle() { _state.idle(); }
         public void silence() { _state.silence(); }
@@ -115,8 +119,6 @@ public abstract class Terminal implements Serializable /* FIXME maybe addd more 
          * @return true if this terminal is neither off neither busy, false otherwise.
          **/
         public boolean canStartCommunication() {
-                // PODEMOS USAR INSTANCE OF?
-                //return !(_state instanceof OffState) && !(_state instanceof BusyState);
 
                 if (!_state.isBusy() && !_state.isOff())
                         return true;
@@ -168,7 +170,6 @@ public abstract class Terminal implements Serializable /* FIXME maybe addd more 
 
         public void addFriend(String friendID, Network network) throws UnknownTerminalKeyException, TerminalCannotAddItselfException {
                 try {
-                        //_friends.put(friendID, network.getTerminal(friendID));
                         network.addFriend(this, friendID);
                 } catch (UnknownTerminalKeyException | TerminalCannotAddItselfException e) {
                         throw e;
@@ -258,6 +259,12 @@ public abstract class Terminal implements Serializable /* FIXME maybe addd more 
                         throw e;
                 }
         }
+
+        public void addCommunicationAttempt(Terminal terminal) {
+                _communicationAttempts.add(terminal);
+        }
+
+
 
         @Override
         public boolean equals(Object o) {

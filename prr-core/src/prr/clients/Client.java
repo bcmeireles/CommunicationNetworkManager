@@ -9,6 +9,8 @@ import prr.terminals.Terminal;
 import prr.tariffs.Tariff;
 import prr.tariffs.BaseTariff;
 
+import prr.notifications.Notification;
+
 import prr.exceptions.*;
 
 // FIXME add more import if needed (cannot import from pt.tecnico or prr.app)
@@ -49,12 +51,8 @@ public class Client implements Serializable {
     private ClientLevel _level = new NormalClient(this);
 
     private Tariff _tariff = new BaseTariff();
-    
-    /** Client tariff */
-    // private Tariff _tariff;
 
-    /** Client notifications */
-    //private Map<Integer, Notification> _notifications = new TreeMap<>();
+    ArrayList<Notification> _notifications = new ArrayList<Notification>();
 
     /**
      * @param id
