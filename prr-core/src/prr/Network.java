@@ -276,7 +276,9 @@ public class Network implements Serializable {
 				sb.append(terminal.toString() + "\n");
 			}
 		}
-		sb.deleteCharAt(sb.length() - 1);
+		if (sb.length() > 0) {
+			sb.deleteCharAt(sb.length() - 1);
+		}
 		return sb.toString();
 
 	}
@@ -305,6 +307,9 @@ public class Network implements Serializable {
 
 	public InteractiveCommunication startInteractiveCommunication(String type, Terminal origin, Terminal destination) throws CommunicationUnsupportedAtOriginException, CommunicationUnsupportedAtDestinationException, DestinationOffException, DestinationBusyException, DestinationSilenceException {		
 		int id = _communications.size() + 1;
+
+		System.out.println("Starting interactive communication");
+		System.out.println(destination.getState().toString());
 
 		if (destination.getState().isBusy()) {
 			throw new DestinationBusyException();
@@ -346,31 +351,6 @@ public class Network implements Serializable {
 	public long getCommunicationCost(Integer communicationID) {
 		return _communications.get(communicationID).getCost();
 	}
-
-	/** 
-	* public String showStartedCommunications(String clientID) {
-	* 	StringBuilder sb = new StringBuilder();
-	* 	for (Communication communication : _communications.values()) {
-	* 		if (communication.getOrigin().getClient().equals(client)) {
-	* 			sb.append(communication.toString() + "\n");
-	* 		}
-	* 	}
-	* 	sb.deleteCharAt(sb.length() - 1);
-	* 	return sb.toString();
-	* }
-	* 
-	* public String showReceivedCommunications(String clientID) {
-	* 	StringBuilder sb = new StringBuilder();
-	* 	for (Communication communication : _communications.values()) {
-	* 		if (communication.getDestination().getClient().getID().equals(client)) {
-	* 			sb.append(communication.toString() + "\n");
-	* 		}
-	* 	}
-	* 	sb.deleteCharAt(sb.length() - 1);
-	* 	return sb.toString();
-	* }
-	* 
-	*/
 
 	public void addFriend(Terminal friender, String friendID) throws UnknownTerminalKeyException, TerminalCannotAddItselfException {
 		if (!_terminals.containsKey(friendID)) {
@@ -425,7 +405,9 @@ public class Network implements Serializable {
 				sb.append(client.toString() + "\n");
 			}
 		}
-		sb.deleteCharAt(sb.length() - 1);
+		if (sb.length() > 0) {
+			sb.deleteCharAt(sb.length() - 1);
+		}
 		return sb.toString();
 	}
 	
@@ -433,13 +415,18 @@ public class Network implements Serializable {
 		if (_clients.isEmpty()) {
 			return "";
 		}
+
 		StringBuilder sb = new StringBuilder();
 		for (Client client : _clients.values()) {
 			if (client.getDebt() == 0) {
 				sb.append(client.toString() + "\n");
 			}
 		}
-		sb.deleteCharAt(sb.length() - 1);
+
+		if (sb.length() > 0) {
+			sb.deleteCharAt(sb.length() - 1);
+		}
+
 		return sb.toString();
 	}
 
@@ -453,7 +440,11 @@ public class Network implements Serializable {
 				sb.append(terminal.toString() + "\n");
 			}
 		}
-		sb.deleteCharAt(sb.length() - 1);
+
+		if (sb.length() > 0) {
+			sb.deleteCharAt(sb.length() - 1);
+		}
+		
 		return sb.toString();
 	}
 
@@ -467,7 +458,9 @@ public class Network implements Serializable {
 				sb.append(communication.toString() + "\n");
 			}
 		}
-		sb.deleteCharAt(sb.length() - 1);
+		if (sb.length() > 0) {
+			sb.deleteCharAt(sb.length() - 1);
+		}
 		return sb.toString();
 	}
 
@@ -481,7 +474,9 @@ public class Network implements Serializable {
 				sb.append(communication.toString() + "\n");
 			}
 		}
-		sb.deleteCharAt(sb.length() - 1);
+		if (sb.length() > 0) {
+			sb.deleteCharAt(sb.length() - 1);
+		}
 		return sb.toString();
 	}
 
@@ -565,6 +560,8 @@ public class Network implements Serializable {
 			}
 
 		}
+
+		terminal.resetCommunicationAttempts();
 		
 		terminal.idle();
 	}
@@ -593,6 +590,8 @@ public class Network implements Serializable {
 			}
 
 		}
+
+		terminal.resetCommunicationAttempts();
 
 		terminal.silence();
 	}

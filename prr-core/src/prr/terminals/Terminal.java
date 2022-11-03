@@ -300,6 +300,12 @@ public abstract class Terminal implements Serializable /* FIXME maybe addd more 
                 return _communicationAttemptsSilence;
         }
 
+        public void resetCommunicationAttempts() {
+                _communicationAttemptsOff.clear();
+                _communicationAttemptsBusy.clear();
+                _communicationAttemptsSilence.clear();
+        }
+
 
         @Override
         public boolean equals(Object o) {
