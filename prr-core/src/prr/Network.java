@@ -354,6 +354,9 @@ public class Network implements Serializable {
 	*/
 
 	public void addFriend(Terminal friender, String friendID) throws UnknownTerminalKeyException, TerminalCannotAddItselfException {
+		if (!_terminals.containsKey(friendID)) {
+			throw new UnknownTerminalKeyException(friendID);
+		}
 
 		Terminal friend = _terminals.get(friendID);
 
@@ -462,4 +465,55 @@ public class Network implements Serializable {
 		sb.deleteCharAt(sb.length() - 1);
 		return sb.toString();
 	}
+
+	public void doPayment(Terminal terminal, String commID) throws InvalidCommunicationKeyException, ClientNotCommunicationOwnerException {
+		if (!_communications.containsKey(commID)) {
+			throw new InvalidCommunicationKeyException();
+		}
+		Communication communication = _communications.get(commID);
+		if (!communication.getDestination().getOwner().equals(terminal.getOwner())) {
+			throw new ClientNotCommunicationOwnerException();
+		}
+
+		terminal.addPayment(communication.getCost());
+		setChanged(true);
+	}
+
+	public long getAllClientsPayments() {
+		long total = 0;
+		for (Client client : _clients.values()) {
+			total += client.getPayments();
+		}
+		return total;
+	}
+
+	public long getAllClientsDebts() {
+		long total = 0;
+		for (Client client : _clients.values()) {
+			total += client.getDebt();
+		}
+		return total;
+	}
+
+	public void idleTerminal(Terminal terminal) throws TerminalAlreadyIdleException {
+		if (terminal.getState().isIdle()) {
+			throw new TerminalAlreadyIdleException();
+		}
+		terminal.idle();
+	}
+
+	public void offTerminal(Terminal terminal) throws TerminalAlreadyOffException {
+		if (terminal.getState().isOff()) {
+			throw new TerminalAlreadyOffException();
+		}
+		terminal.off();
+	}
+
+	public void silenceTerminal(Terminal terminal) throws TerminalAlreadySilencedException {
+		if (terminal.getState().isSilence())
+			throw new TerminalAlreadySilencedException();
+		terminal.silence();
+	}
+
+
 }

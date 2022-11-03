@@ -3,7 +3,8 @@ package prr.app.terminal;
 import prr.Network;
 import prr.terminals.Terminal;
 import pt.tecnico.uilib.menus.CommandException;
-//FIXME add more imports if needed
+
+import prr.exceptions.TerminalAlreadyIdleException;
 
 /**
  * Turn on the terminal.
@@ -16,6 +17,10 @@ class DoTurnOnTerminal extends TerminalCommand {
 
 	@Override
 	protected final void execute() throws CommandException {
-                //FIXME implement command
+                try {
+					_network.idleTerminal(_receiver);
+				} catch (prr.exceptions.TerminalAlreadyIdleException e) {
+					_display.popup(Message.alreadyOn());
+				}
 	}
 }

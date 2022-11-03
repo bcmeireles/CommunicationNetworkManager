@@ -251,6 +251,14 @@ public abstract class Terminal implements Serializable /* FIXME maybe addd more 
                 return _currentCommunication.toString();
         }
 
+        public void doPayment(String commID, Network network) throws InvalidCommunicationKeyException, ClientNotCommunicationOwnerException {
+                try {
+                        network.doPayment(this, commID);
+                } catch (InvalidCommunicationKeyException | ClientNotCommunicationOwnerException e) {
+                        throw e;
+                }
+        }
+
         @Override
         public boolean equals(Object o) {
                 if (o instanceof Terminal) {

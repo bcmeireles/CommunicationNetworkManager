@@ -36,6 +36,11 @@ public class SilenceState extends TerminalState {
     }
 
     @Override
+    public boolean isIdle() {
+        return false;
+    }
+
+    @Override
     public boolean isSilence() {
         return true;
     }
