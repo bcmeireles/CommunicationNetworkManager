@@ -9,6 +9,6 @@ public class BusyToIdleNotification extends Notification {
 
     @Override
     public String toString() {
-        return "B2I|" + _terminal.getID();
+        return "B2I|" + getTerminal().getID();
     }
 }

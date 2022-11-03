@@ -9,6 +9,6 @@ public class SilentToIdleNotification extends Notification {
 
     @Override
     public String toString() {
-        return "S2I|" + _terminal.getID();
+        return "S2I|" + getTerminal().getID();
     }
 }

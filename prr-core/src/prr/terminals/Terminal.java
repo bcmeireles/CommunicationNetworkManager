@@ -3,6 +3,7 @@ package prr.terminals;
 import java.io.Serializable;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.ArrayList;
 
 import prr.Network;
 
@@ -54,7 +55,9 @@ public abstract class Terminal implements Serializable /* FIXME maybe addd more 
         
         //private Map<Integer, Notification> _notifications = new TreeMap<>();
 
-        private ArrayList<Terminal> _communicationAttempts = new ArrayList<Terminal>();
+        private ArrayList<Terminal> _communicationAttemptsOff = new ArrayList<Terminal>();
+        private ArrayList<Terminal> _communicationAttemptsSilence = new ArrayList<Terminal>();
+        private ArrayList<Terminal> _communicationAttemptsBusy = new ArrayList<Terminal>();
 
         // private ArrayList<Notification> _pendingNotifications = new ArrayList<Notification>();
 
@@ -227,7 +230,11 @@ public abstract class Terminal implements Serializable /* FIXME maybe addd more 
         public void startTextCommunication(String destinationID, String message, Network network) throws UnknownTerminalKeyException, DestinationOffException {
                 try {
                         network.startTextCommunication(this, network.getTerminal(destinationID), message);
-                } catch (UnknownTerminalKeyException | DestinationOffException e) {
+                } catch (UnknownTerminalKeyException e) {
+                        throw e;
+                } catch (DestinationOffException e) {
+                        //addCommunicationAttempt(network.getTerminal(destinationID));
+                        ((Terminal) network.getTerminal(destinationID)).addCommunicationAttemptOff(this);
                         throw e;
                 }
         }
@@ -235,7 +242,16 @@ public abstract class Terminal implements Serializable /* FIXME maybe addd more 
         public void startInteractiveCommunication(String destinationID, String type, Network network) throws UnknownTerminalKeyException, CommunicationUnsupportedAtOriginException, CommunicationUnsupportedAtDestinationException, DestinationOffException, DestinationBusyException, DestinationSilenceException {
                 try {
                         network.startInteractiveCommunication(type, this, network.getTerminal(destinationID));
-                } catch (UnknownTerminalKeyException | CommunicationUnsupportedAtOriginException | CommunicationUnsupportedAtDestinationException | DestinationOffException | DestinationBusyException | DestinationSilenceException e) {
+                } catch (UnknownTerminalKeyException | CommunicationUnsupportedAtOriginException | CommunicationUnsupportedAtDestinationException e) {
+                        throw e;
+                } catch (DestinationOffException e) {
+                        ((Terminal) network.getTerminal(destinationID)).addCommunicationAttemptOff(this);
+                        throw e;
+                } catch (DestinationBusyException e) {
+                        ((Terminal) network.getTerminal(destinationID)).addCommunicationAttemptBusy(this);
+                        throw e;
+                } catch (DestinationSilenceException e) {
+                        ((Terminal) network.getTerminal(destinationID)).addCommunicationAttemptSilence(this);
                         throw e;
                 }
         }
@@ -260,10 +276,29 @@ public abstract class Terminal implements Serializable /* FIXME maybe addd more 
                 }
         }
 
-        public void addCommunicationAttempt(Terminal terminal) {
-                _communicationAttempts.add(terminal);
+        public void addCommunicationAttemptOff(Terminal terminal) {
+                _communicationAttemptsOff.add(terminal);
         }
 
+        public void addCommunicationAttemptBusy(Terminal terminal) {
+                _communicationAttemptsBusy.add(terminal);
+        }
+
+        public void addCommunicationAttemptSilence(Terminal terminal) {
+                _communicationAttemptsSilence.add(terminal);
+        }
+
+        public ArrayList<Terminal> getCommunicationAttemptsOff() {
+                return _communicationAttemptsOff;
+        }
+
+        public ArrayList<Terminal> getCommunicationAttemptsBusy() {
+                return _communicationAttemptsBusy;
+        }
+
+        public ArrayList<Terminal> getCommunicationAttemptsSilence() {
+                return _communicationAttemptsSilence;
+        }
 
 
         @Override

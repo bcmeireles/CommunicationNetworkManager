@@ -5,6 +5,7 @@ import java.io.IOException;
 import prr.exceptions.UnrecognizedEntryException;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.ArrayList;
 
 import prr.clients.Client;
 import prr.terminals.Terminal;
@@ -16,6 +17,12 @@ import prr.communications.TextCommunication;
 import prr.communications.InteractiveCommunication;
 import prr.communications.VoiceCommunication;
 import prr.communications.VideoCommunication;
+
+import prr.notifications.Notification;
+import prr.notifications.OffToIdleNotification;
+import prr.notifications.OffToSilentNotification;
+import prr.notifications.BusyToIdleNotification;
+import prr.notifications.SilentToIdleNotification;
 
 import prr.exceptions.*;
 
@@ -193,7 +200,19 @@ public class Network implements Serializable {
 		
 		Client client = _clients.get(id);
 
-		return client.toString();
+		StringBuilder sb = new StringBuilder();
+		sb.append(client.toString() + "\n");
+
+		if (client.getNotifications().size() > 0) {
+			for (Notification n : client.getNotifications()) {
+				sb.append(n.toString() + "\n");
+			}
+		}
+
+		sb.deleteCharAt(sb.length() - 1);
+
+		client.resetNotifications();
+		return sb.toString();
 	}
 
 	public void enableNotifications(String id) throws NotificationsAlreadyEnabledException {
@@ -506,6 +525,47 @@ public class Network implements Serializable {
 		if (terminal.getState().isIdle()) {
 			throw new TerminalAlreadyIdleException();
 		}
+
+		ArrayList<Terminal> missedCommunicationAttemptsOff = terminal.getCommunicationAttemptsOff();
+		ArrayList<Terminal> missedCommunicationAttemptsBusy = terminal.getCommunicationAttemptsBusy();
+		ArrayList<Terminal> missedCommunicationAttemptsSilence = terminal.getCommunicationAttemptsSilence();
+
+		if (!missedCommunicationAttemptsOff.isEmpty()) {
+
+			for (Terminal t : missedCommunicationAttemptsOff) {
+				
+				Client client = t.getOwner();
+
+					OffToIdleNotification notification = new OffToIdleNotification(terminal);
+					client.addNotification(notification);
+			}
+
+		}
+
+		if (!missedCommunicationAttemptsBusy.isEmpty()) {
+
+			for (Terminal t : missedCommunicationAttemptsBusy) {
+				
+				Client client = t.getOwner();
+
+					BusyToIdleNotification notification = new BusyToIdleNotification(terminal);
+					client.addNotification(notification);
+			}
+
+		}
+
+		if (!missedCommunicationAttemptsSilence.isEmpty()) {
+
+			for (Terminal t : missedCommunicationAttemptsSilence) {
+				
+				Client client = t.getOwner();
+
+					SilentToIdleNotification notification = new SilentToIdleNotification(terminal);
+					client.addNotification(notification);
+			}
+
+		}
+		
 		terminal.idle();
 	}
 
@@ -519,8 +579,22 @@ public class Network implements Serializable {
 	public void silenceTerminal(Terminal terminal) throws TerminalAlreadySilencedException {
 		if (terminal.getState().isSilence())
 			throw new TerminalAlreadySilencedException();
+
+		ArrayList<Terminal> missedCommunicationAttemptsOff = terminal.getCommunicationAttemptsOff();
+
+		if (!missedCommunicationAttemptsOff.isEmpty()) {
+
+			for (Terminal t : missedCommunicationAttemptsOff) {
+				
+				Client client = t.getOwner();
+
+					OffToSilentNotification notification = new OffToSilentNotification(terminal);
+					client.addNotification(notification);
+			}
+
+		}
+
 		terminal.silence();
 	}
-
 
 }

@@ -9,6 +9,6 @@ public class OffToIdleNotification extends Notification {
 
     @Override
     public String toString() {
-        return "O2I|" + _terminal.getID();
+        return "O2I|" + getTerminal().getID();
     }
 }

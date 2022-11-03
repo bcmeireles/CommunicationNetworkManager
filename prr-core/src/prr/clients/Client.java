@@ -3,6 +3,7 @@ package prr.clients;
 import java.io.Serializable;
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.ArrayList;
 
 import prr.terminals.Terminal;
 
@@ -163,7 +164,18 @@ public class Client implements Serializable {
     public Tariff getTariff() {
         return _tariff;
     }
- 
+
+    public void addNotification(Notification notification) {
+        _notifications.add(notification);
+    }
+
+    public void resetNotifications() {
+        _notifications.clear();
+    }
+
+    public ArrayList<Notification> getNotifications() {
+        return _notifications;
+    }
 
     @Override
     public String toString() {
