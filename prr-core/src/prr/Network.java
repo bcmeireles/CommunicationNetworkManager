@@ -308,8 +308,8 @@ public class Network implements Serializable {
 	public InteractiveCommunication startInteractiveCommunication(String type, Terminal origin, Terminal destination) throws CommunicationUnsupportedAtOriginException, CommunicationUnsupportedAtDestinationException, DestinationOffException, DestinationBusyException, DestinationSilenceException {		
 		int id = _communications.size() + 1;
 
-		System.out.println("Starting interactive communication");
-		System.out.println(destination.getState().toString());
+		//System.out.println("Starting interactive communication");
+		//System.out.println(destination.getState().toString());
 
 		if (destination.getState().isBusy()) {
 			throw new DestinationBusyException();
@@ -448,10 +448,11 @@ public class Network implements Serializable {
 		return sb.toString();
 	}
 
-	public String showCommunicationsToClient(String clientID) {
-		if (_communications.isEmpty()) {
-			return "";
+	public String showCommunicationsToClient(String clientID) throws UnknownClientKeyException {
+		if (!_clients.containsKey(clientID)) {
+			throw new UnknownClientKeyException(clientID);
 		}
+
 		StringBuilder sb = new StringBuilder();
 		for (Communication communication : _communications.values()) {
 			if (communication.getDestination().getOwner().getID().equals(clientID)) {
@@ -464,10 +465,11 @@ public class Network implements Serializable {
 		return sb.toString();
 	}
 
-	public String showCommunicationsFromClient(String clientID) {
-		if (_communications.isEmpty()) {
-			return "";
+	public String showCommunicationsFromClient(String clientID) throws UnknownClientKeyException {
+		if (!_clients.containsKey(clientID)) {
+			throw new UnknownClientKeyException(clientID);
 		}
+
 		StringBuilder sb = new StringBuilder();
 		for (Communication communication : _communications.values()) {
 			if (communication.getOrigin().getOwner().getID().equals(clientID)) {
@@ -570,6 +572,9 @@ public class Network implements Serializable {
 		if (terminal.getState().isOff()) {
 			throw new TerminalAlreadyOffException();
 		}
+
+		terminal.moveNotificationsToOff();
+
 		terminal.off();
 	}
 
@@ -594,6 +599,22 @@ public class Network implements Serializable {
 		terminal.resetCommunicationAttempts();
 
 		terminal.silence();
+	}
+
+	public long getClientPayments(String clientID) throws UnknownClientKeyException {
+		if (!_clients.containsKey(clientID)) {
+			throw new UnknownClientKeyException(clientID);
+		}
+
+		return _clients.get(clientID).getPayments();
+	}
+
+	public long getClientDebt(String clientID) throws UnknownClientKeyException {
+		if (!_clients.containsKey(clientID)) {
+			throw new UnknownClientKeyException(clientID);
+		}
+
+		return _clients.get(clientID).getDebt();
 	}
 
 }

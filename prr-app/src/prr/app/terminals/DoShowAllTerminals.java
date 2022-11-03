@@ -5,7 +5,6 @@ import java.util.Collections;
 import prr.Network;
 import pt.tecnico.uilib.menus.Command;
 import pt.tecnico.uilib.menus.CommandException;
-//FIXME add more imports if needed
 
 /**
  * Show all terminals.
@@ -18,6 +17,6 @@ class DoShowAllTerminals extends Command<Network> {
 
 	@Override
 	protected final void execute() throws CommandException {
-				_display.popup(_receiver.getAllTerminals());
+		_display.popup(_receiver.getAllTerminals());
 	}
 }

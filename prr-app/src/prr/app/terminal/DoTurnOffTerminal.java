@@ -17,10 +17,10 @@ class DoTurnOffTerminal extends TerminalCommand {
 
 	@Override
 	protected final void execute() throws CommandException {
-                try {
-					_network.offTerminal(_receiver);
-				} catch (prr.exceptions.TerminalAlreadyOffException e) {
-					_display.popup(Message.alreadyOff());
-				}
+        try {
+			_network.offTerminal(_receiver);
+		} catch (prr.exceptions.TerminalAlreadyOffException e) {
+			_display.popup(Message.alreadyOff());
+		}
 	}
 }

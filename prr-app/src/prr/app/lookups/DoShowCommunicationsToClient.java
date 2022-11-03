@@ -3,7 +3,6 @@ package prr.app.lookups;
 import prr.Network;
 import pt.tecnico.uilib.menus.Command;
 import pt.tecnico.uilib.menus.CommandException;
-//FIXME add more imports if needed
 
 /**
  * Show communications to a client.
@@ -17,6 +16,10 @@ class DoShowCommunicationsToClient extends Command<Network> {
 
 	@Override
 	protected final void execute() throws CommandException {
-				_display.popup(_receiver.showCommunicationsToClient(stringField("clientID")));
+		try{
+			_display.popup(_receiver.showCommunicationsToClient(stringField("clientID")));
+		} catch (prr.exceptions.UnknownClientKeyException e) {
+			throw new prr.app.exceptions.UnknownClientKeyException(stringField("clientID"));
+		}
 	}
 }

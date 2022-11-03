@@ -7,6 +7,8 @@ import java.util.ArrayList;
 
 import prr.terminals.Terminal;
 
+import prr.communications.Communication;
+
 import prr.tariffs.Tariff;
 import prr.tariffs.BaseTariff;
 
@@ -15,6 +17,7 @@ import prr.notifications.Notification;
 import prr.exceptions.*;
 
 // FIXME add more import if needed (cannot import from pt.tecnico or prr.app)
+
 
 public class Client implements Serializable {
 
@@ -54,6 +57,8 @@ public class Client implements Serializable {
     private Tariff _tariff = new BaseTariff();
 
     ArrayList<Notification> _notifications = new ArrayList<Notification>();
+
+    private ArrayList<String> _communicationAttempts = new ArrayList<String>();
 
     /**
      * @param id
@@ -109,6 +114,14 @@ public class Client implements Serializable {
 
     public int getVideoStreak() {
         return _videoStreak;
+    }
+
+    public ArrayList<String> getCommunicationAttempts() {
+        return _communicationAttempts;
+    }
+
+    public void addCommunicationAttempt(String id) {
+        _communicationAttempts.add(id);
     }
 
     public void addTerminal(Terminal terminal) {
@@ -175,6 +188,12 @@ public class Client implements Serializable {
 
     public ArrayList<Notification> getNotifications() {
         return _notifications;
+    }
+
+    public void attemptLevelChange() {
+        _level.normal();
+        _level.gold();
+        _level.platinum();
     }
 
     @Override

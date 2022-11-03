@@ -8,8 +8,6 @@ import pt.tecnico.uilib.menus.CommandException;
 
 import prr.exceptions.*;
 
-//FIXME add more imports if needed
-
 /**
  * Command for sending a text communication.
  */
@@ -23,7 +21,6 @@ class DoSendTextCommunication extends TerminalCommand {
 
         @Override
         protected final void execute() throws CommandException {
-                //FIXME implement command
                 try {
                         _receiver.startTextCommunication(stringField("destinationID"), stringField("textMessage"), _network);
                 } catch (prr.exceptions.DestinationOffException e) {

@@ -16,23 +16,22 @@ class DoRegisterClient extends Command<Network> {
 
 	DoRegisterClient(Network receiver) {
 		super(Label.REGISTER_CLIENT, receiver);
-                //FIXME add command fields
-				addStringField("id", Prompt.key());
-				addStringField("name", Prompt.name());
-				addIntegerField("taxID", Prompt.taxId());
+		addStringField("id", Prompt.key());
+		addStringField("name", Prompt.name());
+		addIntegerField("taxID", Prompt.taxId());
 	}
 
 	@Override
 	protected final void execute() throws CommandException {
-			try {
-				_receiver.registerClient(
-					stringField("id"),
-					stringField("name"),
-					integerField("taxID")
-				); 
-			} catch (prr.exceptions.DuplicateClientKeyException e) {
-				throw new prr.app.exceptions.DuplicateClientKeyException(stringField("id"));
-			}
+		try {
+			_receiver.registerClient(
+				stringField("id"),
+				stringField("name"),
+				integerField("taxID")
+			); 
+		} catch (prr.exceptions.DuplicateClientKeyException e) {
+			throw new prr.app.exceptions.DuplicateClientKeyException(stringField("id"));
+		}
 	}
 
 }

@@ -8,8 +8,6 @@ import pt.tecnico.uilib.menus.CommandException;
 import prr.app.exceptions.*;
 import prr.exceptions.*;
 
-//FIXME add more imports if needed
-
 /**
  * Command for ending communication.
  */
@@ -22,8 +20,7 @@ class DoEndInteractiveCommunication extends TerminalCommand {
 
 	@Override
 	protected final void execute() throws CommandException {
-					_display.popup(Message.communicationCost(_receiver.calculateCommunicationCost(stringField("duration"))));
-					_receiver.endCurrentCommunication(stringField("duration"));
+		_display.popup(Message.communicationCost(_receiver.calculateCommunicationCost(stringField("duration"))));
+		_receiver.endCurrentCommunication(stringField("duration"));
 	}
-
 }

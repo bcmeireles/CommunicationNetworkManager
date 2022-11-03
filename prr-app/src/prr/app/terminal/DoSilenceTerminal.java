@@ -17,10 +17,10 @@ class DoSilenceTerminal extends TerminalCommand {
 
 	@Override
 	protected final void execute() throws CommandException {
-                try {
-					_network.silenceTerminal(_receiver);
-				} catch (prr.exceptions.TerminalAlreadySilencedException e) {
-					_display.popup(Message.alreadySilent());
-				}
+        try {
+			_network.silenceTerminal(_receiver);
+		} catch (prr.exceptions.TerminalAlreadySilencedException e) {
+			_display.popup(Message.alreadySilent());
+		}
 	}
 }

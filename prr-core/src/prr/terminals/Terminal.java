@@ -230,11 +230,19 @@ public abstract class Terminal implements Serializable /* FIXME maybe addd more 
         public void startTextCommunication(String destinationID, String message, Network network) throws UnknownTerminalKeyException, DestinationOffException {
                 try {
                         network.startTextCommunication(this, network.getTerminal(destinationID), message);
+                        _owner.resetVideoStreak();
+                        _owner.addTextStreak();
+                        _owner.attemptLevelChange();
                 } catch (UnknownTerminalKeyException e) {
                         throw e;
                 } catch (DestinationOffException e) {
-                        //addCommunicationAttempt(network.getTerminal(destinationID));
-                        ((Terminal) network.getTerminal(destinationID)).addCommunicationAttemptOff(this);
+                        ArrayList<String> communicationAttempts = _owner.getCommunicationAttempts();
+
+                        if (!communicationAttempts.contains(destinationID)) {
+                                _owner.addCommunicationAttempt(destinationID);
+                                ((Terminal) network.getTerminal(destinationID)).addCommunicationAttemptOff(this);
+                        }
+                        
                         throw e;
                 }
         }
@@ -242,16 +250,39 @@ public abstract class Terminal implements Serializable /* FIXME maybe addd more 
         public void startInteractiveCommunication(String destinationID, String type, Network network) throws UnknownTerminalKeyException, CommunicationUnsupportedAtOriginException, CommunicationUnsupportedAtDestinationException, DestinationOffException, DestinationBusyException, DestinationSilenceException {
                 try {
                         network.startInteractiveCommunication(type, this, network.getTerminal(destinationID));
+                        _owner.resetTextStreak();
+                        _owner.addVideoStreak();
+                        _owner.attemptLevelChange();
                 } catch (UnknownTerminalKeyException | CommunicationUnsupportedAtOriginException | CommunicationUnsupportedAtDestinationException e) {
                         throw e;
                 } catch (DestinationOffException e) {
-                        ((Terminal) network.getTerminal(destinationID)).addCommunicationAttemptOff(this);
+                        ArrayList<String> communicationAttempts = _owner.getCommunicationAttempts();
+                        
+                        if (!communicationAttempts.contains(destinationID)) {
+                                _owner.addCommunicationAttempt(destinationID);
+                                ((Terminal) network.getTerminal(destinationID)).addCommunicationAttemptOff(this);
+                        }
+                        
                         throw e;
+
                 } catch (DestinationBusyException e) {
-                        ((Terminal) network.getTerminal(destinationID)).addCommunicationAttemptBusy(this);
+                        ArrayList<String> communicationAttempts = _owner.getCommunicationAttempts();
+                        
+                        if (!communicationAttempts.contains(destinationID)) {
+                                _owner.addCommunicationAttempt(destinationID);
+                                ((Terminal) network.getTerminal(destinationID)).addCommunicationAttemptBusy(this);
+                        }
+                        
                         throw e;
+
                 } catch (DestinationSilenceException e) {
-                        ((Terminal) network.getTerminal(destinationID)).addCommunicationAttemptSilence(this);
+                        ArrayList<String> communicationAttempts = _owner.getCommunicationAttempts();
+                        
+                        if (!communicationAttempts.contains(destinationID)) {
+                                _owner.addCommunicationAttempt(destinationID);
+                                ((Terminal) network.getTerminal(destinationID)).addCommunicationAttemptSilence(this);
+                        }
+                        
                         throw e;
                 }
         }
@@ -260,6 +291,7 @@ public abstract class Terminal implements Serializable /* FIXME maybe addd more 
                 _currentCommunication.setUnits(Integer.parseInt(duration));
                 _currentCommunication.setCost(_currentCommunication.calculateCost());
                 _currentCommunication.endInteractiveCommunication();
+                _owner.attemptLevelChange();
         }
 
         public String showCurrentCommunication() throws NoCurrentCommunicationException {
@@ -285,6 +317,7 @@ public abstract class Terminal implements Serializable /* FIXME maybe addd more 
         }
 
         public void addCommunicationAttemptSilence(Terminal terminal) {
+
                 _communicationAttemptsSilence.add(terminal);
         }
 
@@ -298,6 +331,13 @@ public abstract class Terminal implements Serializable /* FIXME maybe addd more 
 
         public ArrayList<Terminal> getCommunicationAttemptsSilence() {
                 return _communicationAttemptsSilence;
+        }
+
+        public void moveNotificationsToOff() {
+                _communicationAttemptsOff.addAll(_communicationAttemptsBusy);
+                _communicationAttemptsOff.addAll(_communicationAttemptsSilence);
+                _communicationAttemptsBusy.clear();
+                _communicationAttemptsSilence.clear();
         }
 
         public void resetCommunicationAttempts() {

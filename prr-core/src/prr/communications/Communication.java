@@ -90,6 +90,7 @@ public abstract class Communication implements Serializable {
         _isPaid = true;
     }
 
+
     public abstract long calculateCost();
     public abstract long calculateCost(int duration);
 

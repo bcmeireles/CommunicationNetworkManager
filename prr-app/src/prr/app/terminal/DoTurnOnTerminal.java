@@ -17,10 +17,10 @@ class DoTurnOnTerminal extends TerminalCommand {
 
 	@Override
 	protected final void execute() throws CommandException {
-                try {
-					_network.idleTerminal(_receiver);
-				} catch (prr.exceptions.TerminalAlreadyIdleException e) {
-					_display.popup(Message.alreadyOn());
-				}
+        try {
+			_network.idleTerminal(_receiver);
+		} catch (prr.exceptions.TerminalAlreadyIdleException e) {
+			_display.popup(Message.alreadyOn());
+		}
 	}
 }

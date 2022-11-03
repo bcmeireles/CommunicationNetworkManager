@@ -7,7 +7,6 @@ import pt.tecnico.uilib.forms.Form;
 import pt.tecnico.uilib.menus.CommandException;
 
 import prr.exceptions.*;
-//FIXME add more imports if needed
 
 /**
  * Command for starting communication.
@@ -22,21 +21,20 @@ class DoStartInteractiveCommunication extends TerminalCommand {
 
 	@Override
 	protected final void execute() throws CommandException {
-
-				try {
-					_receiver.startInteractiveCommunication(stringField("destinationID"), optionField("commType"), _network);
-				} catch (prr.exceptions.CommunicationUnsupportedAtOriginException e) {
-					_display.popup(Message.unsupportedAtOrigin(_receiver.getID(), stringField("commType")));
-				} catch (prr.exceptions.CommunicationUnsupportedAtDestinationException e) {
-					_display.popup(Message.unsupportedAtDestination(stringField("destinationID"), stringField("commType")));
-				} catch (prr.exceptions.DestinationOffException e) {
-					_display.popup(Message.destinationIsOff(stringField("destinationID")));
-				} catch (prr.exceptions.DestinationBusyException e) {
-					_display.popup(Message.destinationIsBusy(stringField("destinationID")));
-				} catch (prr.exceptions.DestinationSilenceException e) {
-					_display.popup(Message.destinationIsSilent(stringField("destinationID")));
-				} catch (prr.exceptions.UnknownTerminalKeyException e) {
-					throw new UnknownTerminalKeyException(stringField("destinationID"));
-				}
+		try {
+			_receiver.startInteractiveCommunication(stringField("destinationID"), optionField("commType"), _network);
+		} catch (prr.exceptions.CommunicationUnsupportedAtOriginException e) {
+			_display.popup(Message.unsupportedAtOrigin(_receiver.getID(), stringField("commType")));
+		} catch (prr.exceptions.CommunicationUnsupportedAtDestinationException e) {
+			_display.popup(Message.unsupportedAtDestination(stringField("destinationID"), stringField("commType")));
+		} catch (prr.exceptions.DestinationOffException e) {
+			_display.popup(Message.destinationIsOff(stringField("destinationID")));
+		} catch (prr.exceptions.DestinationBusyException e) {
+			_display.popup(Message.destinationIsBusy(stringField("destinationID")));
+		} catch (prr.exceptions.DestinationSilenceException e) {
+			_display.popup(Message.destinationIsSilent(stringField("destinationID")));
+		} catch (prr.exceptions.UnknownTerminalKeyException e) {
+			throw new UnknownTerminalKeyException(stringField("destinationID"));
+		}
 	}
 }
